@@ -1,0 +1,52 @@
+{
+  "comments": {
+    "lineComment": "//",
+    "blockComment": ["/*", "*/"]
+  },
+  "brackets": [
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"]
+  ],
+  "autoClosingPairs": [
+    { "open": "(", "close": ")" },
+    { "open": "[", "close": "]" },
+    { "open": "{", "close": "}" },
+    { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "「", "close": "」" },
+    { "open": "『", "close": "』" }
+  ],
+  "surroundingPairs": [
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"],
+    ["\"", "\""],
+    ["「", "」"],
+    ["『", "』"]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*(関数|生成関数|もし|条件|繰り返す|型|試行|選択|照合|各)\\b",
+      "end": "^\\s*終わり\\b"
+    }
+  },
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化)\\b.*:\\s*$|^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化|なら)\\s*$",
+    "decreaseIndentPattern": "^\\s*(終わり|それ以外もし|それ以外|捕獲|最終|場合|既定)\\b"
+  },
+  "wordPattern": "[\\p{L}\\p{N}_]+",
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化)\\b.*:\\s*$",
+      "action": { "indent": "indent" }
+    },
+    {
+      "beforeText": "^\\s*なら\\s*$",
+      "action": { "indent": "indent" }
+    },
+    {
+      "beforeText": "^\\s*終わり\\s*$",
+      "action": { "indent": "outdent" }
+    }
+  ]
+}

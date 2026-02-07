@@ -1,0 +1,355 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "はじむ",
+  "scopeName": "source.hajimu",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#class-definition" },
+    { "include": "#function-definition" },
+    { "include": "#builtin-functions" },
+    { "include": "#constants" },
+    { "include": "#operators" },
+    { "include": "#punctuation" },
+    { "include": "#variables" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.hash.hajimu",
+          "match": "#.*$"
+        },
+        {
+          "name": "comment.line.double-slash.hajimu",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.hajimu",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [
+            { "include": "#string-interpolation" },
+            { "include": "#string-escape" }
+          ]
+        },
+        {
+          "name": "string.quoted.double.hajimu",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "include": "#string-interpolation" },
+            { "include": "#string-escape" }
+          ]
+        }
+      ]
+    },
+    "string-interpolation": {
+      "patterns": [
+        {
+          "name": "meta.embedded.interpolation.hajimu",
+          "match": "\\{[^}]*\\}",
+          "captures": {
+            "0": { "name": "meta.template.expression.hajimu" }
+          }
+        }
+      ]
+    },
+    "string-escape": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.hajimu",
+          "match": "\\\\[nrt\\\\\"0]"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.hajimu",
+          "match": "\\b0[xX][0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.binary.hajimu",
+          "match": "\\b0[bB][01]+\\b"
+        },
+        {
+          "name": "constant.numeric.float.hajimu",
+          "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b"
+        },
+        {
+          "name": "constant.numeric.integer.hajimu",
+          "match": "\\b[0-9]+([eE][+-]?[0-9]+)?\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.flow.hajimu",
+          "match": "\\b(もし|それ以外もし|それ以外|なら|終わり|条件|の間|繰り返す|から|を|抜ける|続ける|各|の中|選択|場合|既定|照合)\\b"
+        },
+        {
+          "name": "keyword.control.trycatch.hajimu",
+          "match": "\\b(試行|捕獲|最終|投げる)\\b"
+        },
+        {
+          "name": "keyword.declaration.variable.hajimu",
+          "match": "\\b(変数|定数)\\b"
+        },
+        {
+          "name": "keyword.declaration.function.hajimu",
+          "match": "\\b(関数|生成関数)\\b"
+        },
+        {
+          "name": "keyword.control.return.hajimu",
+          "match": "\\b(戻す|譲渡)\\b"
+        },
+        {
+          "name": "keyword.control.import.hajimu",
+          "match": "\\b(取り込む)\\b"
+        },
+        {
+          "name": "keyword.operator.logical.hajimu",
+          "match": "\\b(かつ|または|でない)\\b"
+        },
+        {
+          "name": "keyword.other.class.hajimu",
+          "match": "\\b(型|新規|継承|自分|初期化|親|静的|列挙)\\b"
+        },
+        {
+          "name": "keyword.other.async.hajimu",
+          "match": "\\b(非同期実行|待機|全待機|タスク状態)\\b"
+        },
+        {
+          "name": "storage.type.hajimu",
+          "match": "\\b(数値|文字列|真偽|配列|は)\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.true.hajimu",
+          "match": "\\b真\\b"
+        },
+        {
+          "name": "constant.language.boolean.false.hajimu",
+          "match": "\\b偽\\b"
+        },
+        {
+          "name": "constant.language.null.hajimu",
+          "match": "\\b無\\b"
+        },
+        {
+          "name": "constant.language.math.hajimu",
+          "match": "\\b(円周率|自然対数の底)\\b"
+        }
+      ]
+    },
+    "class-definition": {
+      "patterns": [
+        {
+          "match": "(型)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "captures": {
+            "1": { "name": "keyword.other.class.hajimu" },
+            "2": { "name": "entity.name.type.class.hajimu" }
+          }
+        }
+      ]
+    },
+    "function-definition": {
+      "patterns": [
+        {
+          "match": "(関数|生成関数)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "captures": {
+            "1": { "name": "keyword.declaration.function.hajimu" },
+            "2": { "name": "entity.name.function.hajimu" }
+          }
+        }
+      ]
+    },
+    "builtin-functions": {
+      "patterns": [
+        {
+          "name": "support.function.io.hajimu",
+          "match": "\\b(表示|入力)\\b"
+        },
+        {
+          "name": "support.function.collection.hajimu",
+          "match": "\\b(長さ|追加|削除|ソート|逆順|スライス|位置|存在|末尾削除|探す|全て|一つでも|一意|圧縮|平坦化|挿入|比較ソート)\\b"
+        },
+        {
+          "name": "support.function.type.hajimu",
+          "match": "\\b(型|数値化|文字列化|数値か|文字列か|真偽か|配列か|辞書か|関数か|無か|型判定|型別名)\\b"
+        },
+        {
+          "name": "support.function.string.hajimu",
+          "match": "\\b(分割|結合|検索|置換|大文字|小文字|空白除去|部分文字列|始まる|終わる|文字コード|コード文字)\\b"
+        },
+        {
+          "name": "support.function.math.hajimu",
+          "match": "\\b(絶対値|平方根|切り捨て|切り上げ|四捨五入|乱数|最大|最小|正弦|余弦|正接|対数|常用対数|乱数整数)\\b"
+        },
+        {
+          "name": "support.function.higher-order.hajimu",
+          "match": "\\b(変換|抽出|集約|反復|範囲)\\b"
+        },
+        {
+          "name": "support.function.dict.hajimu",
+          "match": "\\b(キー|値一覧|含む)\\b"
+        },
+        {
+          "name": "support.function.file.hajimu",
+          "match": "\\b(読み込む|書き込む|ファイル存在|追記|ディレクトリ一覧|ディレクトリ作成|パス結合|ファイル名|ディレクトリ名|拡張子)\\b"
+        },
+        {
+          "name": "support.function.datetime.hajimu",
+          "match": "\\b(現在時刻|日付|時間|待つ)\\b"
+        },
+        {
+          "name": "support.function.json.hajimu",
+          "match": "\\b(JSON化|JSON解析)\\b"
+        },
+        {
+          "name": "support.function.http.hajimu",
+          "match": "\\b(HTTP取得|HTTP送信|HTTP更新|HTTP削除|HTTPリクエスト|サーバー起動|サーバー停止|URLエンコード|URLデコード)\\b"
+        },
+        {
+          "name": "support.function.regex.hajimu",
+          "match": "\\b(正規一致|正規検索|正規置換)\\b"
+        },
+        {
+          "name": "support.function.bitwise.hajimu",
+          "match": "\\b(ビット積|ビット和|ビット排他|ビット否定|左シフト|右シフト)\\b"
+        },
+        {
+          "name": "support.function.async.hajimu",
+          "match": "\\b(非同期実行|待機|全待機|タスク状態|並列実行|排他作成|排他実行)\\b"
+        },
+        {
+          "name": "support.function.channel.hajimu",
+          "match": "\\b(チャネル作成|チャネル送信|チャネル受信|チャネル閉じる)\\b"
+        },
+        {
+          "name": "support.function.scheduler.hajimu",
+          "match": "\\b(定期実行|遅延実行|スケジュール停止|全スケジュール停止)\\b"
+        },
+        {
+          "name": "support.function.websocket.hajimu",
+          "match": "\\b(WS接続|WS送信|WS受信|WS切断|WS状態)\\b"
+        },
+        {
+          "name": "support.function.generator.hajimu",
+          "match": "\\b(次|完了|全値)\\b"
+        },
+        {
+          "name": "support.function.encoding.hajimu",
+          "match": "\\b(Base64エンコード|Base64デコード)\\b"
+        },
+        {
+          "name": "support.function.set.hajimu",
+          "match": "\\b(集合|集合追加|集合削除|集合含む|和集合|積集合|差集合)\\b"
+        },
+        {
+          "name": "support.function.test.hajimu",
+          "match": "\\b(テスト|テスト実行|期待|期待エラー)\\b"
+        },
+        {
+          "name": "support.function.doc.hajimu",
+          "match": "\\b(文書化|文書|例外作成)\\b"
+        },
+        {
+          "name": "support.function.system.hajimu",
+          "match": "\\b(実行|環境変数|環境変数設定|終了|表明)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.pipe.hajimu",
+          "match": "\\|>"
+        },
+        {
+          "name": "keyword.operator.arrow.hajimu",
+          "match": "=>"
+        },
+        {
+          "name": "keyword.operator.spread.hajimu",
+          "match": "\\.\\.\\."
+        },
+        {
+          "name": "keyword.operator.null-coalesce.hajimu",
+          "match": "\\?\\?"
+        },
+        {
+          "name": "keyword.operator.comparison.hajimu",
+          "match": "==|!=|<=|>=|<|>"
+        },
+        {
+          "name": "keyword.operator.assignment.compound.hajimu",
+          "match": "\\+=|-=|\\*\\*=|\\*=|/=|%="
+        },
+        {
+          "name": "keyword.operator.assignment.hajimu",
+          "match": "="
+        },
+        {
+          "name": "keyword.operator.arithmetic.hajimu",
+          "match": "\\+|-|\\*\\*|\\*|/|%"
+        },
+        {
+          "name": "keyword.operator.decorator.hajimu",
+          "match": "@"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.bracket.round.hajimu",
+          "match": "[()]"
+        },
+        {
+          "name": "punctuation.bracket.square.hajimu",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.bracket.curly.hajimu",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.separator.comma.hajimu",
+          "match": ","
+        },
+        {
+          "name": "punctuation.separator.colon.hajimu",
+          "match": ":"
+        },
+        {
+          "name": "punctuation.accessor.dot.hajimu",
+          "match": "\\."
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.language.self.hajimu",
+          "match": "\\b自分\\b"
+        },
+        {
+          "name": "variable.language.super.hajimu",
+          "match": "\\b親\\b"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "name": "hajimu-language",
+  "displayName": "はじむ (Hajimu) Language Support",
+  "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - シンタックスハイライト、コード補完、スニペット、実行サポート",
+  "version": "1.0.0",
+  "publisher": "ReoShiozawa",
+  "author": {
+    "name": "Reo Shiozawa"
+  },
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReoShiozawa/hajimu-vscode"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Formatters"
+  ],
+  "keywords": [
+    "hajimu",
+    "はじむ",
+    "日本語",
+    "Japanese",
+    "programming language"
+  ],
+  "activationEvents": [
+    "onLanguage:hajimu"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "hajimu",
+        "aliases": [
+          "はじむ",
+          "Hajimu",
+          "hajimu"
+        ],
+        "extensions": [
+          ".jp"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./images/file-icon-light.svg",
+          "dark": "./images/file-icon-dark.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "hajimu",
+        "scopeName": "source.hajimu",
+        "path": "./syntaxes/hajimu.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "hajimu",
+        "path": "./snippets/hajimu.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "hajimu.run",
+        "title": "はじむ: ファイルを実行",
+        "icon": "$(play)"
+      },
+      {
+        "command": "hajimu.runSelection",
+        "title": "はじむ: 選択範囲を実行"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "hajimu.run",
+          "when": "resourceLangId == hajimu",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "hajimu.run",
+          "when": "resourceLangId == hajimu",
+          "group": "1_run"
+        },
+        {
+          "command": "hajimu.runSelection",
+          "when": "resourceLangId == hajimu && editorHasSelection",
+          "group": "1_run"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "hajimu.run",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r",
+        "when": "resourceLangId == hajimu"
+      }
+    ],
+    "configuration": {
+      "title": "はじむ (Hajimu)",
+      "properties": {
+        "hajimu.executablePath": {
+          "type": "string",
+          "default": "hajimu",
+          "description": "はじむインタープリタのパス（例: hajimu, hj, /usr/local/bin/hajimu）"
+        },
+        "hajimu.runInTerminal": {
+          "type": "boolean",
+          "default": true,
+          "description": "ターミナルで実行するかどうか"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}
