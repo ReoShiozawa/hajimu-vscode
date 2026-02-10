@@ -18,6 +18,7 @@ export const KEYWORDS: KeywordInfo[] = [
     // 関数
     { name: '関数', description: '関数を定義する', detail: '関数 名前(引数):\n    処理\n終わり' },
     { name: '戻す', description: '関数から値を返す', detail: '戻す 値' },
+    { name: '返す', description: '関数から値を返す（戻すの別名）', detail: '返す 値' },
     { name: '終わり', description: 'ブロックを終了する', detail: 'もし/関数/型 の終端' },
     // 条件分岐
     { name: 'もし', description: '条件分岐（if文）', detail: 'もし 条件 なら\n    処理\n終わり' },
@@ -271,4 +272,56 @@ export const BUILTIN_FUNCTIONS: BuiltinInfo[] = [
     { name: '環境変数設定', description: '環境変数を設定', signature: '環境変数設定(名前, 値)', category: 'システム' },
     { name: '終了', description: 'プログラムを終了', signature: '終了(コード?)', category: 'システム' },
     { name: '表明', description: 'アサーション', signature: '表明(条件, メッセージ?)', category: 'システム' },
+    // hajimu_web プラグイン関数
+    // サーバー管理
+    { name: 'サーバー作成', description: 'Webサーバーを作成', signature: 'ウェブ.サーバー作成(ポート)', category: 'hajimu_web' },
+    { name: '起動', description: 'Webサーバーを起動', signature: 'ウェブ.起動()', category: 'hajimu_web' },
+    { name: '停止', description: 'Webサーバーを停止', signature: 'ウェブ.停止()', category: 'hajimu_web' },
+    { name: 'ポート取得', description: 'サーバーのポート番号を取得', signature: 'ウェブ.ポート取得()', category: 'hajimu_web' },
+    { name: '実行中', description: 'サーバーが実行中か判定', signature: 'ウェブ.実行中()', category: 'hajimu_web' },
+    { name: 'サーバー情報', description: 'サーバーの統計情報を取得', signature: 'ウェブ.サーバー情報()', category: 'hajimu_web' },
+    // ミドルウェア
+    { name: 'ミドルウェア', description: 'ミドルウェアを有効化', signature: 'ウェブ.ミドルウェア("logger"|"cors"|"json"|"security"|"rate_limit")', category: 'hajimu_web' },
+    { name: 'ミドルウェア一覧', description: 'ミドルウェア一覧を取得', signature: 'ウェブ.ミドルウェア一覧()', category: 'hajimu_web' },
+    // ルーティング
+    { name: 'ルート追加', description: 'ルートを追加', signature: 'ウェブ.ルート追加(メソッド, パス, ステータス, Content-Type, ボディ)', category: 'hajimu_web' },
+    { name: 'GET', description: 'GETルートを追加（文字列応答またはコールバック関数）', signature: 'ウェブ.GET(パス, ボディ|コールバック関数)', category: 'hajimu_web' },
+    { name: 'POST', description: 'POSTルートを追加', signature: 'ウェブ.POST(パス, ボディ|コールバック関数)', category: 'hajimu_web' },
+    { name: 'PUT', description: 'PUTルートを追加', signature: 'ウェブ.PUT(パス, ボディ|コールバック関数)', category: 'hajimu_web' },
+    { name: 'DELETE', description: 'DELETEルートを追加', signature: 'ウェブ.DELETE(パス, ボディ|コールバック関数)', category: 'hajimu_web' },
+    { name: 'PATCH', description: 'PATCHルートを追加', signature: 'ウェブ.PATCH(パス, ボディ|コールバック関数)', category: 'hajimu_web' },
+    { name: 'ALL', description: '全HTTPメソッドのルートを追加', signature: 'ウェブ.ALL(パス, ボディ|コールバック関数)', category: 'hajimu_web' },
+    { name: 'JSON応答', description: 'JSON応答ルートを追加', signature: 'ウェブ.JSON応答(メソッド, パス, JSONボディ)', category: 'hajimu_web' },
+    { name: 'JSON_POST', description: 'JSON POST応答ルートを追加', signature: 'ウェブ.JSON_POST(パス, ステータス, JSONボディ)', category: 'hajimu_web' },
+    { name: 'ルート一覧', description: 'ルート一覧を取得', signature: 'ウェブ.ルート一覧()', category: 'hajimu_web' },
+    // グループ
+    { name: 'グループ', description: 'ルートグループを開始', signature: 'ウェブ.グループ(プレフィックス)', category: 'hajimu_web' },
+    { name: 'グループ終了', description: 'ルートグループを終了', signature: 'ウェブ.グループ終了()', category: 'hajimu_web' },
+    // エラー
+    { name: 'エラーページ', description: 'HTMLエラーページを設定', signature: 'ウェブ.エラーページ(ステータス, タイトル, メッセージ)', category: 'hajimu_web' },
+    { name: 'JSONエラーページ', description: 'JSONエラーページを設定', signature: 'ウェブ.JSONエラーページ(ステータス, メッセージ)', category: 'hajimu_web' },
+    // テンプレート
+    { name: 'テンプレートディレクトリ', description: 'テンプレートディレクトリを設定', signature: 'ウェブ.テンプレートディレクトリ(パス)', category: 'hajimu_web' },
+    { name: 'テンプレート変数', description: 'テンプレート変数を設定', signature: 'ウェブ.テンプレート変数(キー, 値)', category: 'hajimu_web' },
+    { name: 'テンプレート描画', description: 'テンプレートをレンダリング', signature: 'ウェブ.テンプレート描画(ファイル名)', category: 'hajimu_web' },
+    { name: 'テンプレート文字列', description: 'テンプレート文字列をレンダリング', signature: 'ウェブ.テンプレート文字列(テンプレート)', category: 'hajimu_web' },
+    { name: 'テンプレートGET', description: 'テンプレートGETルートを追加', signature: 'ウェブ.テンプレートGET(パス, テンプレートファイル)', category: 'hajimu_web' },
+    // レスポンスヘルパー
+    { name: 'リダイレクト応答', description: 'リダイレクトレスポンスを送信', signature: 'ウェブ.リダイレクト応答(パス, ステータス?)', category: 'hajimu_web' },
+    // Cookie
+    { name: 'Cookie設定', description: 'Cookieを設定', signature: 'ウェブ.Cookie設定(名前, 値, オプション?)', category: 'hajimu_web' },
+    { name: 'Cookie削除', description: 'Cookieを削除', signature: 'ウェブ.Cookie削除(名前)', category: 'hajimu_web' },
+    // レスポンス制御
+    { name: 'ヘッダー設定', description: 'レスポンスヘッダーを設定', signature: 'ウェブ.ヘッダー設定(キー, 値)', category: 'hajimu_web' },
+    { name: 'ステータス設定', description: 'HTTPステータスコードを設定', signature: 'ウェブ.ステータス設定(コード)', category: 'hajimu_web' },
+    { name: 'コンテンツタイプ設定', description: 'Content-Typeを設定', signature: 'ウェブ.コンテンツタイプ設定(タイプ)', category: 'hajimu_web' },
+    // JSON ユーティリティ
+    { name: 'JSON解析', description: 'JSON文字列をパースする', signature: 'ウェブ.JSON解析(文字列)', category: 'hajimu_web' },
+    { name: 'JSON生成', description: 'はじむ値をJSON文字列に変換', signature: 'ウェブ.JSON生成(値)', category: 'hajimu_web' },
+    // 設定
+    { name: '静的ファイル', description: '静的ファイルディレクトリを設定', signature: 'ウェブ.静的ファイル(パス)', category: 'hajimu_web' },
+    { name: '静的キャッシュ', description: '静的ファイルのキャッシュ秒数を設定', signature: 'ウェブ.静的キャッシュ(秒)', category: 'hajimu_web' },
+    { name: 'CORS有効', description: 'CORSを有効化', signature: 'ウェブ.CORS有効()', category: 'hajimu_web' },
+    { name: 'CORS設定', description: 'CORSの詳細設定', signature: 'ウェブ.CORS設定(Origin?, Methods?, Headers?)', category: 'hajimu_web' },
+    { name: 'レート制限設定', description: 'レートリミッタの設定', signature: 'ウェブ.レート制限設定(最大リクエスト数, ウィンドウ秒?)', category: 'hajimu_web' },
 ];

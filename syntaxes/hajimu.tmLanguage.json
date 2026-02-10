@@ -109,7 +109,7 @@
         },
         {
           "name": "keyword.control.return.hajimu",
-          "match": "\\b(戻す|譲渡)\\b"
+          "match": "\\b(戻す|返す|譲渡)\\b"
         },
         {
           "name": "keyword.control.import.hajimu",

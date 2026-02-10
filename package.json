@@ -2,7 +2,7 @@
   "name": "hajimu-language",
   "displayName": "はじむ (Hajimu) Language Support",
   "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - シンタックスハイライト、コード補完、スニペット、実行サポート",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "ReoShiozawa",
   "author": {
     "name": "Reo Shiozawa"
