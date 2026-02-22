@@ -61,7 +61,7 @@
 
 ### VSIX ファイルから
 ```bash
-code --install-extension hajimu-language-1.0.0.vsix
+code --install-extension hajimu-language-2.0.0.vsix
 ```
 
 ## ⚙️ 設定
