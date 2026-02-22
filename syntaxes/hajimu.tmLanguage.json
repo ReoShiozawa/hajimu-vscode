@@ -7,6 +7,8 @@
     { "include": "#strings" },
     { "include": "#numbers" },
     { "include": "#keywords" },
+    { "include": "#plugin-call" },
+    { "include": "#import-statement" },
     { "include": "#class-definition" },
     { "include": "#function-definition" },
     { "include": "#builtin-functions" },
@@ -348,6 +350,37 @@
         {
           "name": "variable.language.super.hajimu",
           "match": "\\b親\\b"
+        }
+      ]
+    },
+    "plugin-call": {
+      "patterns": [
+        {
+          "match": "(GUI|gui|画面|ウェブ|Web|サーバー|ディスコード|ボット|Discord|Bot)\\.([\u3041-\u9FFFa-zA-Z_][\u3041-\u9FFFa-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "entity.name.type.module.hajimu" },
+            "2": { "name": "entity.name.function.plugin.hajimu" }
+          }
+        },
+        {
+          "match": "([\u3041-\u9FFFa-zA-Z_][\u3041-\u9FFFa-zA-Z0-9_]*)\\.([\u3041-\u9FFFa-zA-Z_][\u3041-\u9FFFa-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "variable.other.object.hajimu" },
+            "2": { "name": "entity.name.function.member.hajimu" }
+          }
+        }
+      ]
+    },
+    "import-statement": {
+      "patterns": [
+        {
+          "match": "(取り込む)\\s*\\(?\\s*\"([^\"]*)\"\\s*\\)?\\s*(として)\\s+([\u3041-\u9FFFa-zA-Z_][\u3041-\u9FFFa-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.import.hajimu" },
+            "2": { "name": "string.quoted.double.module.hajimu" },
+            "3": { "name": "keyword.control.import.as.hajimu" },
+            "4": { "name": "entity.name.type.module.hajimu" }
+          }
         }
       ]
     }

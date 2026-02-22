@@ -1,8 +1,8 @@
 {
   "name": "hajimu-language",
   "displayName": "はじむ (Hajimu) Language Support",
-  "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - シンタックスハイライト、コード補完、スニペット、実行サポート",
-  "version": "1.0.2",
+  "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - 構文エラー検知、コード補完、ホバー情報、シグネチャヘルプ、シンボル・定義ジャンプ、コードアクション、フォーマッタ、カラーピッカー、GUI/Web/Discordプラグイン対応",
+  "version": "2.0.0",
   "publisher": "ReoShiozawa",
   "author": {
     "name": "Reo Shiozawa"
@@ -26,7 +26,13 @@
     "はじむ",
     "日本語",
     "Japanese",
-    "programming language"
+    "programming language",
+    "GUI",
+    "web server",
+    "discord bot",
+    "hajimu_gui",
+    "hajimu_web",
+    "hajimu_discord"
   ],
   "activationEvents": [
     "onLanguage:hajimu"
@@ -116,6 +122,36 @@
           "type": "boolean",
           "default": true,
           "description": "ターミナルで実行するかどうか"
+        },
+        "hajimu.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "リアルタイム構文エラー検知を有効にする"
+        },
+        "hajimu.diagnostics.delay": {
+          "type": "number",
+          "default": 500,
+          "description": "診断更新の遅延時間（ミリ秒）"
+        },
+        "hajimu.format.tabSize": {
+          "type": "number",
+          "default": 4,
+          "description": "フォーマット時のインデントサイズ"
+        },
+        "hajimu.plugins.gui.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "hajimu_gui プラグインの補完・ホバーを有効にする"
+        },
+        "hajimu.plugins.web.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "hajimu_web プラグインの補完・ホバーを有効にする"
+        },
+        "hajimu.plugins.discord.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "hajimu_discord プラグインの補完・ホバーを有効にする"
         }
       }
     }
