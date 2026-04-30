@@ -1,8 +1,8 @@
 {
   "name": "hajimu-language",
   "displayName": "はじむ (Hajimu) Language Support",
-  "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - 構文エラー検知、コード補完、ホバー情報、シグネチャヘルプ、シンボル・定義ジャンプ、コードアクション、フォーマッタ、カラーピッカー、GUI/Web/Discordプラグイン対応",
-  "version": "2.0.0",
+  "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - 構文エラー検知、コード補完、ホバー情報、シグネチャヘルプ、シンボル・定義ジャンプ、コードアクション、フォーマッタ、カラーピッカー、GUI/Web/Discordプラグイン対応、デバッグ機能、括弧補完",
+  "version": "2.0.2",
   "publisher": "ReoShiozawa",
   "author": {
     "name": "Reo Shiozawa"
@@ -70,6 +70,18 @@
         "path": "./snippets/hajimu.json"
       }
     ],
+    "themes": [
+      {
+        "label": "はじむ ダーク",
+        "uiTheme": "vs-dark",
+        "path": "./themes/hajimu-dark.json"
+      },
+      {
+        "label": "はじむ ライト",
+        "uiTheme": "vs",
+        "path": "./themes/hajimu-light.json"
+      }
+    ],
     "commands": [
       {
         "command": "hajimu.run",
@@ -79,6 +91,133 @@
       {
         "command": "hajimu.runSelection",
         "title": "はじむ: 選択範囲を実行"
+      },
+      {
+        "command": "hajimu.insertFunctionTemplate",
+        "title": "はじむ: 関数テンプレートを挿入"
+      },
+      {
+        "command": "hajimu.insertFunctionWithReturnTemplate",
+        "title": "はじむ: 関数テンプレートを挿入（戻り値あり）"
+      },
+      {
+        "command": "hajimu.insertClassTemplate",
+        "title": "はじむ: クラステンプレートを挿入"
+      },
+      {
+        "command": "hajimu.insertIfElseTemplate",
+        "title": "はじむ: if-else テンプレートを挿入"
+      },
+      {
+        "command": "hajimu.insertIfElseIfTemplate",
+        "title": "はじむ: if-else if-else テンプレートを挿入"
+      },
+      {
+        "command": "hajimu.insertForLoopTemplate",
+        "title": "はじむ: for ループテンプレートを挿入"
+      },
+      {
+        "command": "hajimu.insertWhileLoopTemplate",
+        "title": "はじむ: while ループテンプレートを挿入"
+      },
+      {
+        "command": "hajimu.insertTryCatchTemplate",
+        "title": "はじむ: try-catch-finally テンプレートを挿入"
+      },
+      {
+        "command": "hajimu.debug",
+        "title": "はじむ: デバッグ実行",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "hajimu.debugStop",
+        "title": "はじむ: デバッグ停止",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "hajimu.toggleBreakpoint",
+        "title": "はじむ: ブレークポイント切り替え"
+      },
+      {
+        "command": "hajimu.showBreakpoints",
+        "title": "はじむ: ブレークポイント一覧表示"
+      },
+      {
+        "command": "hajimu.clearAllBreakpoints",
+        "title": "はじむ: 全ブレークポイント削除"
+      },
+      {
+        "command": "hajimu.pluginWizard",
+        "title": "はじむ: プラグインウィザード",
+        "icon": "$(extensions)"
+      },
+      {
+        "command": "hajimu.jumpToMatchingBracket",
+        "title": "はじむ: 対応括弧へジャンプ"
+      },
+      {
+        "command": "hajimu.extractFunction",
+        "title": "はじむ: 関数に抽出"
+      },
+      {
+        "command": "hajimu.extractBlock",
+        "title": "はじむ: ブロックを関数に抽出"
+      },
+      {
+        "command": "hajimu.generateTest",
+        "title": "はじむ: テストを生成"
+      },
+      {
+        "command": "hajimu.insertAssertions",
+        "title": "はじむ: アサーションを挿入"
+      },
+      {
+        "command": "hajimu.runTests",
+        "title": "はじむ: テストを実行"
+      },
+      {
+        "command": "hajimu.showCoverage",
+        "title": "はじむ: テストカバレッジを表示"
+      },
+      {
+        "command": "hajimu.addTiming",
+        "title": "はじむ: 実行時間計測を追加"
+      },
+      {
+        "command": "hajimu.generateBenchmark",
+        "title": "はじむ: ベンチマークを生成"
+      },
+      {
+        "command": "hajimu.showOptimizations",
+        "title": "はじむ: 最適化提案を表示"
+      },
+      {
+        "command": "hajimu.checkMemoryLeak",
+        "title": "はじむ: メモリリーク検査コードを生成"
+      },
+      {
+        "command": "hajimu.addDocumentation",
+        "title": "はじむ: ドキュメントを追加"
+      },
+      {
+        "command": "hajimu.generateAPI",
+        "title": "はじむ: API ドキュメントを生成"
+      },
+      {
+        "command": "hajimu.generateChangelog",
+        "title": "はじむ: 変更ログを生成"
+      },
+      {
+        "command": "hajimu.generateReadme",
+        "title": "はじむ: README を生成"
+      },
+      {
+        "command": "hajimu.generateContributing",
+        "title": "はじむ: CONTRIBUTING を生成"
+      },
+      {
+        "command": "hajimu.checkDocumentation",
+        "title": "はじむ: ドキュメント状態を確認"
       }
     ],
     "menus": {
@@ -107,6 +246,138 @@
         "command": "hajimu.run",
         "key": "ctrl+shift+r",
         "mac": "cmd+shift+r",
+        "when": "resourceLangId == hajimu"
+      },
+      {
+        "command": "hajimu.insertFunctionTemplate",
+        "key": "ctrl+alt+f",
+        "mac": "cmd+alt+f",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.insertFunctionWithReturnTemplate",
+        "key": "ctrl+alt+shift+f",
+        "mac": "cmd+alt+shift+f",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.insertClassTemplate",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.insertIfElseTemplate",
+        "key": "ctrl+alt+i",
+        "mac": "cmd+alt+i",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.insertIfElseIfTemplate",
+        "key": "ctrl+alt+shift+i",
+        "mac": "cmd+alt+shift+i",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.insertForLoopTemplate",
+        "key": "ctrl+alt+l",
+        "mac": "cmd+alt+l",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.insertWhileLoopTemplate",
+        "key": "ctrl+alt+w",
+        "mac": "cmd+alt+w",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.insertTryCatchTemplate",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.debug",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "when": "resourceLangId == hajimu"
+      },
+      {
+        "command": "hajimu.debugStop",
+        "key": "ctrl+shift+x",
+        "mac": "cmd+shift+x",
+        "when": "resourceLangId == hajimu"
+      },
+      {
+        "command": "hajimu.toggleBreakpoint",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.pluginWizard",
+        "key": "ctrl+alt+p",
+        "mac": "cmd+alt+p",
+        "when": "resourceLangId == hajimu"
+      },
+      {
+        "command": "hajimu.jumpToMatchingBracket",
+        "key": "ctrl+shift+\\",
+        "mac": "cmd+shift+\\",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.extractFunction",
+        "key": "ctrl+alt+e",
+        "mac": "cmd+alt+e",
+        "when": "resourceLangId == hajimu && editorTextFocus && editorHasSelection"
+      },
+      {
+        "command": "hajimu.extractBlock",
+        "key": "ctrl+alt+b",
+        "mac": "cmd+alt+b",
+        "when": "resourceLangId == hajimu && editorTextFocus && editorHasSelection"
+      },
+      {
+        "command": "hajimu.generateTest",
+        "key": "ctrl+alt+g",
+        "mac": "cmd+alt+g",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.runTests",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.showCoverage",
+        "key": "ctrl+alt+shift+t",
+        "mac": "cmd+alt+shift+t",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.generateBenchmark",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.showOptimizations",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.addDocumentation",
+        "key": "ctrl+alt+d",
+        "mac": "cmd+alt+d",
+        "when": "resourceLangId == hajimu && editorTextFocus"
+      },
+      {
+        "command": "hajimu.generateAPI",
+        "key": "ctrl+alt+shift+a",
+        "mac": "cmd+alt+shift+a",
         "when": "resourceLangId == hajimu"
       }
     ],
@@ -152,6 +423,21 @@
           "type": "boolean",
           "default": true,
           "description": "hajimu_discord プラグインの補完・ホバーを有効にする"
+        },
+        "hajimu.editor.indentDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "インデント エラー診断を有効にする"
+        },
+        "hajimu.editor.bracketCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "括弧の自動補完を有効にする"
+        },
+        "hajimu.editor.bracketHighlight": {
+          "type": "boolean",
+          "default": true,
+          "description": "対応括弧のハイライトを有効にする"
         }
       }
     }

@@ -51,6 +51,52 @@
 - ブラケットの自動ペアリング
 - コメントトグル (`//`)
 
+### ⚡ テンプレート挿入（高速コーディング）
+**Cmd+Alt+X で迅速にコード生成:**
+- `Cmd+Alt+F`: 関数テンプレート
+- `Cmd+Alt+Shift+F`: 関数テンプレート（戻り値あり）
+- `Cmd+Alt+C`: クラステンプレート
+- `Cmd+Alt+I`: if-else テンプレート
+- `Cmd+Alt+Shift+I`: if-else if-else テンプレート
+- `Cmd+Alt+L`: for ループテンプレート
+- `Cmd+Alt+W`: while ループテンプレート
+- `Cmd+Alt+T`: try-catch-finally テンプレート
+
+**エイリアス短縮入力（リアルタイム展開）:**
+「fn 」と入力するだけで関数テンプレートが自動展開：
+- `fn` → 関数テンプレート
+- `fnr` → 関数テンプレート（戻り値）
+- `cl` → クラステンプレート
+- `if` → if-else テンプレート
+- `ifi` → if-else if-else テンプレート
+- `lp` → for ループテンプレート
+- `wh` → while ループテンプレート
+- `tc` → try-catch テンプレート
+
+### 🎨 カラーテーム
+2種類のテーマを用意：
+- **はじむ ダーク**: Blue キーワード、Yellow 関数、Cyan 組み込み関数
+- **はじむ ライト**: Blue キーワード、Brown 関数、Teal 組み込み関数
+
+### 🐛 デバッグ & ブレークポイント
+**統合デバッグ機能（v2.0.2 新機能）:**
+- ブレークポイント設定・管理（ガター装飾）
+- デバッグモード実行（コンソール出力キャプチャ）
+- 実行停止・リセット機能
+
+**デバッグコマンド:**
+- `Cmd+Shift+D`: デバッグ実行
+- `Cmd+Shift+X`: デバッグ停止
+- `Cmd+Shift+L`: ブレークポイント切り替え
+
+### 🔌 プラグインウィザード
+**GUI/Web/Discord プラグイン自動セットアップ（v2.0.2 新機能）:**
+- `Cmd+Alt+P`: プラグインウィザード起動
+- 3種プラグイン（hajimu_gui, hajimu_web, hajimu_discord）を複数選択
+- 自動インポート生成
+- サンプルコード挿入
+- HTML ドキュメント表示
+
 ## 📦 インストール
 
 ### VS Code マーケットプレイスから
@@ -61,7 +107,7 @@
 
 ### VSIX ファイルから
 ```bash
-code --install-extension hajimu-language-2.0.0.vsix
+code --install-extension hajimu-language-2.0.2.vsix
 ```
 
 ## ⚙️ 設定
@@ -70,6 +116,9 @@ code --install-extension hajimu-language-2.0.0.vsix
 |---|---|---|
 | `hajimu.executablePath` | `hajimu` | インタープリタのパス |
 | `hajimu.runInTerminal` | `true` | ターミナルで実行するか |
+| `hajimu.plugins.gui.enabled` | `true` | GUI プラグイン補完を有効にする |
+| `hajimu.plugins.web.enabled` | `true` | Web プラグイン補完を有効にする |
+| `hajimu.plugins.discord.enabled` | `true` | Discord プラグイン補完を有効にする |
 
 ### はじむのインストール
 ```bash
