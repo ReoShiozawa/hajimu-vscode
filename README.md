@@ -8,16 +8,18 @@
 
 ### 🎨 シンタックスハイライト
 - キーワード（`関数`、`もし`、`変数` など）
-- 143個の組み込み関数
+- 多数の組み込み関数
 - 文字列、数値、コメント
 - 文字列補間（`{式}`）
 - 演算子（`|>`、`=>`、`??` など）
 
 ### 💡 コード補完
 - すべてのキーワードを補完候補に表示
-- 143個の組み込み関数をカテゴリ付きで補完
+- 多数の組み込み関数をカテゴリ付きで補完
 - ファイル内の変数・関数・クラス名を自動補完
 - 括弧の自動入力
+- ローマ字・英語エイリアスから日本語キーワードへ展開
+- プラグイン関数と import 候補を文脈に合わせて補完
 
 ### 📝 スニペット
 よく使う構文パターンを素早く入力：
@@ -33,11 +35,34 @@
 | `変数` / `var` | 変数宣言 |
 | `表示` / `print` | コンソール出力 |
 | `HTTP取得` / `httpget` | HTTPリクエスト |
+| `取り込む` / `import` | プラグイン import |
 | その他30+種類 | ... |
+
+### ⌨️ ローマ字入力展開
+日本語キーワードの入力速度を上げるため、ローマ字や英語名から補完できます。
+
+| 入力 | 展開後 |
+|---|---|
+| `kansu` / `func` | `関数` |
+| `hensuu` / `var` | `変数` |
+| `moshi` / `if` | `もし` |
+| `modosu` / `return` | `戻す` |
+| `torikomu` / `import` | `取り込む` |
+| `hyouji` / `print` | `表示` |
+
+`hajimu.romajiExpansion.autoExpandOnSpace` を有効にすると、`kansu ` のような入力をスペース確定で自動展開できます。
+
+### 🛠️ 診断と Quick Fix
+- 未定義の可能性がある識別子に近い名前を提案
+- プラグイン関数の import 候補を Quick Fix で追加
+- `戻す` / `返す` の混在や import 構文の違いを説明
+- 括弧不足、辞書アクセス、配列アクセス、関数呼び出しを個別に診断
+- エラー行を日本語で説明するコマンドを提供
 
 ### 🔍 ホバー情報
 - キーワードにカーソルを合わせると構文説明を表示
 - 組み込み関数のシグネチャ・説明・カテゴリを表示
+- プラグイン関数とブラケット形式呼び出しの説明を表示
 
 ### ▶️ 実行サポート
 - エディタ上部の再生ボタンで実行
@@ -73,7 +98,7 @@
 - `wh` → while ループテンプレート
 - `tc` → try-catch テンプレート
 
-### 🎨 カラーテーム
+### 🎨 カラーテーマ
 2種類のテーマを用意：
 - **はじむ ダーク**: Blue キーワード、Yellow 関数、Cyan 組み込み関数
 - **はじむ ライト**: Blue キーワード、Brown 関数、Teal 組み込み関数
@@ -92,10 +117,17 @@
 ### 🔌 プラグインウィザード
 **GUI/Web/Discord プラグイン自動セットアップ（v2.0.2 新機能）:**
 - `Cmd+Alt+P`: プラグインウィザード起動
-- 3種プラグイン（hajimu_gui, hajimu_web, hajimu_discord）を複数選択
+- GUI / Web / Discord / 描画 / 音声 / RPG などのプラグインを複数選択
 - 自動インポート生成
 - サンプルコード挿入
 - HTML ドキュメント表示
+
+### 📚 学習支援（v2.0.3 新機能）
+- はじむ構文を英語圏言語の用語で説明
+- 選択コードの処理内容を説明
+- 選択コードの改善ポイントを表示
+- エラーが出ている行の原因と直し方を説明
+- サンプルコードから新規ファイルを開始
 
 ## 📦 インストール
 
@@ -107,7 +139,7 @@
 
 ### VSIX ファイルから
 ```bash
-code --install-extension hajimu-language-2.0.2.vsix
+code --install-extension hajimu-language-2.0.3.vsix
 ```
 
 ## ⚙️ 設定
@@ -116,9 +148,14 @@ code --install-extension hajimu-language-2.0.2.vsix
 |---|---|---|
 | `hajimu.executablePath` | `hajimu` | インタープリタのパス |
 | `hajimu.runInTerminal` | `true` | ターミナルで実行するか |
+| `hajimu.diagnostics.enabled` | `true` | リアルタイム診断を有効にする |
+| `hajimu.diagnostics.undefinedIdentifiers` | `true` | 未定義識別子の候補表示を有効にする |
 | `hajimu.plugins.gui.enabled` | `true` | GUI プラグイン補完を有効にする |
 | `hajimu.plugins.web.enabled` | `true` | Web プラグイン補完を有効にする |
 | `hajimu.plugins.discord.enabled` | `true` | Discord プラグイン補完を有効にする |
+| `hajimu.romajiExpansion.enabled` | `true` | ローマ字・短縮入力補完を有効にする |
+| `hajimu.romajiExpansion.autoExpandOnSpace` | `false` | スペース入力時の自動展開を有効にする |
+| `hajimu.romajiExpansion.includeEnglishAliases` | `true` | 英語エイリアス候補を有効にする |
 
 ### はじむのインストール
 ```bash

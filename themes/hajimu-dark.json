@@ -1,0 +1,232 @@
+{
+  "name": "はじむ ダーク",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#1e1e1e",
+    "editor.foreground": "#d4d4d4",
+    "editorLineNumber.foreground": "#858585",
+    "editorLineNumber.activeForeground": "#c6c6c6",
+    "editor.selectionBackground": "#264f78",
+    "editor.lineHighlightBackground": "#2d2d2d",
+    "editorCursor.foreground": "#aeafad",
+    "editorWhitespace.foreground": "#464647",
+    "editorBracketMatch.background": "#3e3e3e",
+    "editorBracketMatch.border": "#ff8c00",
+    "editor.findMatchBackground": "#515c6a",
+    "editor.findMatchHighlightBackground": "#ea5c0055",
+    "editor.wordHighlightBackground": "#575757",
+    "editorError.foreground": "#f48771",
+    "editorWarning.foreground": "#dcdcaa",
+    "editorInfo.foreground": "#4ec9b0",
+    "editorHint.foreground": "#4ec9b0",
+    "editor.foldBackground": "#424242",
+    "editor.foldGutter": "#1e1e1e"
+  },
+  "tokenColors": [
+    {
+      "name": "コメント",
+      "scope": ["comment"],
+      "settings": {
+        "foreground": "#6a9955",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "文字列",
+      "scope": ["string"],
+      "settings": {
+        "foreground": "#ce9178"
+      }
+    },
+    {
+      "name": "文字列エスケープ",
+      "scope": ["constant.character.escape"],
+      "settings": {
+        "foreground": "#d7ba7d"
+      }
+    },
+    {
+      "name": "数値",
+      "scope": ["constant.numeric"],
+      "settings": {
+        "foreground": "#b5cea8"
+      }
+    },
+    {
+      "name": "定数（真偽・無）",
+      "scope": ["constant.language"],
+      "settings": {
+        "foreground": "#569cd6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "制御フロー キーワード",
+      "scope": [
+        "keyword.control.flow.hajimu",
+        "keyword.control.trycatch.hajimu",
+        "keyword.control.return.hajimu"
+      ],
+      "settings": {
+        "foreground": "#569cd6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "宣言 キーワード",
+      "scope": [
+        "keyword.declaration.variable.hajimu",
+        "keyword.declaration.function.hajimu"
+      ],
+      "settings": {
+        "foreground": "#569cd6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "その他 キーワード",
+      "scope": [
+        "keyword.other",
+        "keyword.operator.logical.hajimu",
+        "storage.type.hajimu"
+      ],
+      "settings": {
+        "foreground": "#569cd6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "ユーザー定義クラス・型",
+      "scope": ["entity.name.type.class.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "ユーザー定義関数",
+      "scope": ["entity.name.function.hajimu"],
+      "settings": {
+        "foreground": "#dcdcaa",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "プラグインモジュール名",
+      "scope": ["entity.name.type.module.hajimu"],
+      "settings": {
+        "foreground": "#c586c0",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "プラグイン関数",
+      "scope": ["entity.name.function.plugin.hajimu"],
+      "settings": {
+        "foreground": "#c586c0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "メンバー関数",
+      "scope": ["entity.name.function.member.hajimu"],
+      "settings": {
+        "foreground": "#9cdcfe",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（IO）",
+      "scope": ["support.function.io.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（コレクション）",
+      "scope": ["support.function.collection.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（型）",
+      "scope": ["support.function.type.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（文字列）",
+      "scope": ["support.function.string.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（数学）",
+      "scope": ["support.function.math.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（高階）",
+      "scope": ["support.function.higher-order.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（ファイル）",
+      "scope": ["support.function.file.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（HTTP）",
+      "scope": ["support.function.http.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "組み込み関数（非同期）",
+      "scope": ["support.function.async.hajimu"],
+      "settings": {
+        "foreground": "#4ec9b0",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "演算子",
+      "scope": ["keyword.operator"],
+      "settings": {
+        "foreground": "#d4d4d4"
+      }
+    },
+    {
+      "name": "変数",
+      "scope": ["variable"],
+      "settings": {
+        "foreground": "#9cdcfe"
+      }
+    },
+    {
+      "name": "不正な構文",
+      "scope": ["invalid"],
+      "settings": {
+        "foreground": "#f48771"
+      }
+    }
+  ]
+}

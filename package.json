@@ -1,8 +1,8 @@
 {
   "name": "hajimu-language",
   "displayName": "はじむ (Hajimu) Language Support",
-  "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - 構文エラー検知、コード補完、ホバー情報、シグネチャヘルプ、シンボル・定義ジャンプ、コードアクション、フォーマッタ、カラーピッカー、GUI/Web/Discordプラグイン対応、デバッグ機能、括弧補完",
-  "version": "2.0.2",
+  "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - ローマ字入力展開、構文エラー検知、未定義識別子サジェスト、コード補完、ホバー情報、シグネチャヘルプ、シンボル・定義ジャンプ、コードアクション、フォーマッタ、カラーピッカー、プラグイン対応、デバッグ機能、括弧補完",
+  "version": "2.0.3",
   "publisher": "ReoShiozawa",
   "author": {
     "name": "Reo Shiozawa"
@@ -204,6 +204,26 @@
         "title": "はじむ: API ドキュメントを生成"
       },
       {
+        "command": "hajimu.explainEnglishConcepts",
+        "title": "はじむ: この構文を英語圏言語の用語で説明"
+      },
+      {
+        "command": "hajimu.explainSelectedCode",
+        "title": "はじむ: 選択コードを説明"
+      },
+      {
+        "command": "hajimu.improveSelectedCode",
+        "title": "はじむ: このコードを改善"
+      },
+      {
+        "command": "hajimu.explainDiagnosticsAtCursor",
+        "title": "はじむ: エラーが出ている行を説明"
+      },
+      {
+        "command": "hajimu.startFromSample",
+        "title": "はじむ: サンプルから開始"
+      },
+      {
         "command": "hajimu.generateChangelog",
         "title": "はじむ: 変更ログを生成"
       },
@@ -238,6 +258,31 @@
           "command": "hajimu.runSelection",
           "when": "resourceLangId == hajimu && editorHasSelection",
           "group": "1_run"
+        },
+        {
+          "command": "hajimu.explainEnglishConcepts",
+          "when": "resourceLangId == hajimu",
+          "group": "5_learn"
+        },
+        {
+          "command": "hajimu.explainSelectedCode",
+          "when": "resourceLangId == hajimu",
+          "group": "5_learn"
+        },
+        {
+          "command": "hajimu.improveSelectedCode",
+          "when": "resourceLangId == hajimu",
+          "group": "5_learn"
+        },
+        {
+          "command": "hajimu.explainDiagnosticsAtCursor",
+          "when": "resourceLangId == hajimu",
+          "group": "5_learn"
+        },
+        {
+          "command": "hajimu.startFromSample",
+          "when": "resourceLangId == hajimu",
+          "group": "5_learn"
         }
       ]
     },
@@ -404,6 +449,11 @@
           "default": 500,
           "description": "診断更新の遅延時間（ミリ秒）"
         },
+        "hajimu.diagnostics.undefinedIdentifiers": {
+          "type": "boolean",
+          "default": true,
+          "description": "未定義の可能性がある識別子を検出し、近い名前への修正候補を表示する"
+        },
         "hajimu.format.tabSize": {
           "type": "number",
           "default": 4,
@@ -438,6 +488,21 @@
           "type": "boolean",
           "default": true,
           "description": "対応括弧のハイライトを有効にする"
+        },
+        "hajimu.romajiExpansion.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "ローマ字・短縮入力から日本語キーワードへの補完候補を有効にする"
+        },
+        "hajimu.romajiExpansion.autoExpandOnSpace": {
+          "type": "boolean",
+          "default": false,
+          "description": "スペース入力時に kansu → 関数 のようなローマ字自動展開を行う"
+        },
+        "hajimu.romajiExpansion.includeEnglishAliases": {
+          "type": "boolean",
+          "default": true,
+          "description": "function / if / return など英語エイリアスの補完・自動展開候補を含める"
         }
       }
     }
@@ -447,6 +512,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
+    "generate:plugins": "node scripts/extract-plugin-functions.js",
+    "verify:assets": "node scripts/verify-extension-assets.js",
     "package": "vsce package"
   },
   "devDependencies": {
