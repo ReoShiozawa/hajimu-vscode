@@ -38,6 +38,12 @@
 | `取り込む` / `import` | プラグイン import |
 | その他30+種類 | ... |
 
+### 🌐 はじむ v1.4.0 英語構文対応
+- `.jp` に加えて `.haj` / `.hajimu` をはじむファイルとして認識
+- `function` / `var` / `if` / `for` / `return` / `class` / `new` などの英語構文 alias をハイライト
+- 英語構文 alias でもブロック折りたたみ・インデント補助が動作
+- 日本語構文と英語構文を混ぜたコードでも補完・ホバー・診断を利用可能
+
 ### ⌨️ ローマ字入力展開
 日本語キーワードの入力速度を上げるため、ローマ字や英語名から補完できます。
 
@@ -122,7 +128,7 @@
 - サンプルコード挿入
 - HTML ドキュメント表示
 
-### 📚 学習支援（v2.0.3 新機能）
+### 📚 学習支援（v2.0.3+）
 - はじむ構文を英語圏言語の用語で説明
 - 選択コードの処理内容を説明
 - 選択コードの改善ポイントを表示
@@ -139,7 +145,7 @@
 
 ### VSIX ファイルから
 ```bash
-code --install-extension hajimu-language-2.0.3.vsix
+code --install-extension hajimu-language-2.0.4.vsix
 ```
 
 ## ⚙️ 設定
@@ -156,6 +162,14 @@ code --install-extension hajimu-language-2.0.3.vsix
 | `hajimu.romajiExpansion.enabled` | `true` | ローマ字・短縮入力補完を有効にする |
 | `hajimu.romajiExpansion.autoExpandOnSpace` | `false` | スペース入力時の自動展開を有効にする |
 | `hajimu.romajiExpansion.includeEnglishAliases` | `true` | 英語エイリアス候補を有効にする |
+
+### 対応ファイル拡張子
+
+| 拡張子 | 用途 |
+|---|---|
+| `.jp` | 日本語中心のはじむソース |
+| `.haj` | 英語 alias を含む教材・海外向けソース |
+| `.hajimu` | はじむソースであることを明示したい場合 |
 
 ### はじむのインストール
 ```bash

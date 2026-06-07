@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.4] - 2026-06-07
+### Added
+- はじむ v1.4.0 に合わせて `.haj` / `.hajimu` の言語関連付けを追加
+- `function` / `var` / `if` / `for` / `return` / `class` / `new` など英語構文 alias のシンタックスハイライトを追加
+- 英語構文 alias の折りたたみ・インデント補助を追加
+
+### Changed
+- README を v1.4.0 の英語構文 alias / 複数拡張子対応に合わせて更新
+- 拡張機能バージョンを 2.0.4 に更新
+
+### Notes
+- はじむ本体 v1.4.0 以降との併用を推奨
+
 All notable changes to this project will be documented in this file.
 
 ## [2.0.3] - 2026-05-04

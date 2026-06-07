@@ -2,7 +2,7 @@
   "name": "hajimu-language",
   "displayName": "はじむ (Hajimu) Language Support",
   "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - ローマ字入力展開、構文エラー検知、未定義識別子サジェスト、コード補完、ホバー情報、シグネチャヘルプ、シンボル・定義ジャンプ、コードアクション、フォーマッタ、カラーピッカー、プラグイン対応、デバッグ機能、括弧補完",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "publisher": "ReoShiozawa",
   "author": {
     "name": "Reo Shiozawa"
@@ -48,7 +48,9 @@
           "hajimu"
         ],
         "extensions": [
-          ".jp"
+          ".jp",
+          ".haj",
+          ".hajimu"
         ],
         "configuration": "./language-configuration.json",
         "icon": {

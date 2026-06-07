@@ -23,7 +23,7 @@ import { registerPerformanceTools } from './performanceTools';
 import { registerDocumentationTools } from './documentationTools';
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('はじむ (Hajimu) 拡張機能 v2.0.3 がアクティブになりました');
+    console.log('はじむ (Hajimu) 拡張機能 v2.0.4 がアクティブになりました');
 
     // テンプレート挿入コマンド（Cmd+Alt+で高速入力）
     registerTemplateCommands(context);
