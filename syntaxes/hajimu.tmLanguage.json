@@ -95,43 +95,43 @@
       "patterns": [
         {
           "name": "keyword.control.flow.hajimu",
-          "match": "\\b(もし|それ以外もし|それ以外|なら|終わり|条件|の間|繰り返す|から|を|抜ける|続ける|各|の中|選択|場合|既定|照合)\\b"
+          "match": "\\b(もし|それ以外もし|それ以外|なら|終わり|条件|の間|繰り返す|から|を|抜ける|続ける|各|の中|選択|場合|既定|照合|if|else|then|end|while|do|for|from|to|break|continue|each|in|switch|case|default|match)\\b"
         },
         {
           "name": "keyword.control.trycatch.hajimu",
-          "match": "\\b(試行|捕獲|最終|投げる)\\b"
+          "match": "\\b(試行|捕獲|最終|投げる|try|catch|finally|throw)\\b"
         },
         {
           "name": "keyword.declaration.variable.hajimu",
-          "match": "\\b(変数|定数)\\b"
+          "match": "\\b(変数|定数|var|let|const)\\b"
         },
         {
           "name": "keyword.declaration.function.hajimu",
-          "match": "\\b(関数|生成関数)\\b"
+          "match": "\\b(関数|生成関数|function|fn|generator)\\b"
         },
         {
           "name": "keyword.control.return.hajimu",
-          "match": "\\b(戻す|返す|譲渡)\\b"
+          "match": "\\b(戻す|返す|譲渡|return|yield)\\b"
         },
         {
           "name": "keyword.control.import.hajimu",
-          "match": "\\b(取り込む)\\b"
+          "match": "\\b(取り込む|import|use)\\b"
         },
         {
           "name": "keyword.operator.logical.hajimu",
-          "match": "\\b(かつ|または|でない)\\b"
+          "match": "\\b(かつ|または|でない|and|or|not)\\b"
         },
         {
           "name": "keyword.other.class.hajimu",
-          "match": "\\b(型|新規|継承|自分|初期化|親|静的|列挙)\\b"
+          "match": "\\b(型|新規|継承|自分|初期化|親|静的|列挙|class|new|extends|self|init|super|static|enum)\\b"
         },
         {
           "name": "keyword.other.async.hajimu",
-          "match": "\\b(非同期実行|待機|全待機|タスク状態)\\b"
+          "match": "\\b(非同期実行|待機|全待機|タスク状態|async_run|await_task|await_all|task_status)\\b"
         },
         {
           "name": "storage.type.hajimu",
-          "match": "\\b(数値|文字列|真偽|配列|は)\\b"
+          "match": "\\b(数値|文字列|真偽|配列|は|number|string|bool|boolean|array|dict|is)\\b"
         }
       ]
     },
@@ -158,7 +158,7 @@
     "class-definition": {
       "patterns": [
         {
-          "match": "(型)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "match": "(型|class)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
           "captures": {
             "1": { "name": "keyword.other.class.hajimu" },
             "2": { "name": "entity.name.type.class.hajimu" }
@@ -169,7 +169,7 @@
     "function-definition": {
       "patterns": [
         {
-          "match": "(関数|生成関数)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "match": "(関数|生成関数|function|fn|generator)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
           "captures": {
             "1": { "name": "keyword.declaration.function.hajimu" },
             "2": { "name": "entity.name.function.hajimu" }

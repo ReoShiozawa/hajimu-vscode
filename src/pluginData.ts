@@ -4,12 +4,14 @@
  * プラグイン関数は「プレフィックス.関数名()」の形式で呼び出される
  * 例: GUI.アプリ作成(), ウェブ.GET(), ボット.ボット作成()
  */
+import { ENGINE_PLUGINS } from './pluginDataEngine';
 
 export interface PluginFuncInfo {
     name: string;
     description: string;
     signature: string;
     category: string;
+    examples?: string[];
 }
 
 export interface PluginInfo {
@@ -26,21 +28,21 @@ export interface PluginInfo {
 // ============================================================
 const GUI_FUNCTIONS: PluginFuncInfo[] = [
     // --- アプリケーション管理 ---
-    { name: 'アプリ作成', description: 'GUIアプリケーションを作成', signature: 'アプリ作成(タイトル, 幅, 高さ)', category: 'アプリケーション' },
-    { name: '描画ループ', description: 'メイン描画ループを開始', signature: '描画ループ(アプリ, コールバック)', category: 'アプリケーション' },
+    { name: 'アプリ作成', description: 'GUIアプリケーションを作成', signature: 'アプリ作成(タイトル, 幅, 高さ)', category: 'アプリケーション', examples: ['変数 アプリ = GUI.アプリ作成("My App", 800, 600)'] },
+    { name: '描画ループ', description: 'メイン描画ループを開始', signature: '描画ループ(アプリ, コールバック)', category: 'アプリケーション', examples: ['GUI.描画ループ(アプリ, 関数():\n    // 描画処理\n終わり)'] },
     { name: 'アプリ終了', description: 'アプリケーションを終了', signature: 'アプリ終了()', category: 'アプリケーション' },
     { name: 'ウィンドウサイズ', description: 'ウィンドウサイズを取得', signature: 'ウィンドウサイズ()', category: 'ウィンドウ' },
     { name: 'ウィンドウタイトル', description: 'ウィンドウタイトルを設定', signature: 'ウィンドウタイトル(タイトル)', category: 'ウィンドウ' },
     { name: 'ウィンドウリサイズ', description: 'ウィンドウサイズを変更', signature: 'ウィンドウリサイズ(幅, 高さ)', category: 'ウィンドウ' },
     { name: 'フレームレート', description: 'フレームレートを設定', signature: 'フレームレート(FPS)', category: 'アプリケーション' },
-    { name: '背景色', description: '背景色を設定', signature: '背景色(R, G, B, A?)', category: 'スタイル' },
+    { name: '背景色', description: '背景色を設定', signature: '背景色(R, G, B, A?)', category: 'スタイル', examples: ['GUI.背景色(255, 255, 255, 255)'] },
     // --- 色 ---
-    { name: '色', description: 'RGBA色を作成', signature: '色(R, G, B, A?)', category: '色' },
-    { name: '色16進', description: '16進数カラーコードから色を作成', signature: '色16進("#RRGGBB")', category: '色' },
+    { name: '色', description: 'RGBA色を作成', signature: '色(R, G, B, A?)', category: '色', examples: ['変数 赤 = GUI.色(255, 0, 0, 255)'] },
+    { name: '色16進', description: '16進数カラーコードから色を作成', signature: '色16進("#RRGGBB")', category: '色', examples: ['GUI.色16進("#FF0000")'] },
     // --- 基本ウィジェット ---
-    { name: 'テキスト', description: 'テキストを表示', signature: 'テキスト(文字列)', category: 'ウィジェット' },
+    { name: 'テキスト', description: 'テキストを表示', signature: 'テキスト(文字列)', category: 'ウィジェット', examples: ['GUI.テキスト("Hello, GUI!")'] },
     { name: '見出し', description: '見出しテキストを表示', signature: '見出し(文字列)', category: 'ウィジェット' },
-    { name: 'ボタン', description: 'ボタンを作成', signature: 'ボタン(ラベル) → 真偽', category: 'ウィジェット' },
+    { name: 'ボタン', description: 'ボタンを作成', signature: 'ボタン(ラベル) → 真偽', category: 'ウィジェット', examples: ['もし GUI.ボタン("クリック") なら\n    表示("ボタンが押されました")\n終わり'] },
     { name: 'チェックボックス', description: 'チェックボックスを作成', signature: 'チェックボックス(ラベル, 値) → 真偽', category: 'ウィジェット' },
     { name: 'ラジオボタン', description: 'ラジオボタンを作成', signature: 'ラジオボタン(ラベル, 選択肢, 現在値)', category: 'ウィジェット' },
     { name: 'スライダー', description: 'スライダーを作成', signature: 'スライダー(ラベル, 値, 最小, 最大)', category: 'ウィジェット' },
@@ -358,6 +360,20 @@ const WEB_FUNCTIONS: PluginFuncInfo[] = [
 ];
 
 // ============================================================
+// jp-gui-v2 プラグイン (8 関数 - Metal GPU レンダリング)
+// ============================================================
+const GUI_V2_FUNCTIONS: PluginFuncInfo[] = [
+    { name: '初期化', description: 'GPU コンテキストを初期化', signature: '初期化()', category: 'システム' },
+    { name: 'ウィンドウ作成', description: 'GPU レンダリングウィンドウを作成', signature: 'ウィンドウ作成(幅, 高さ)', category: 'ウィンドウ' },
+    { name: 'フレーム開始', description: 'フレーム描画を開始', signature: 'フレーム開始()', category: '描画' },
+    { name: 'フレーム終了', description: 'フレーム描画を終了・GPU 送信', signature: 'フレーム終了()', category: '描画' },
+    { name: '矩形描画', description: 'GPU で矩形を描画 (高速)', signature: '矩形描画(x, y, 幅, 高さ, R, G, B, A)', category: '描画' },
+    { name: '円描画', description: 'GPU で円を描画 (自動テッセレーション)', signature: '円描画(x, y, 半径, R, G, B, A)', category: '描画' },
+    { name: 'テキスト描画', description: 'GPU でテキストを描画 (8x16 モノスペース)', signature: 'テキスト描画(x, y, テキスト, R, G, B, A)', category: '描画' },
+    { name: '実行状態チェック', description: 'ウィンドウが開いているかを確認', signature: '実行状態チェック() → 真偽', category: 'ウィンドウ' },
+];
+
+// ============================================================
 // hajimu_discord プラグイン (242 関数)
 // ============================================================
 const DISCORD_FUNCTIONS: PluginFuncInfo[] = [
@@ -516,26 +532,33 @@ export const PLUGINS: PluginInfo[] = [
         description: 'Discord Bot開発プラグイン (242関数)',
         functions: DISCORD_FUNCTIONS,
     },
+    ...ENGINE_PLUGINS,
+    {
+        pluginName: 'gui_v2-macos',
+        displayName: 'jp-gui-v2',
+        version: '1.0.0',
+        commonAliases: ['jp-gui-v2', 'グラフィックス', 'GPU', 'v2'],
+        description: 'Metal GPU アクセラレーション GUI フレームワーク (8関数)',
+        functions: GUI_V2_FUNCTIONS,
+    },
 ];
 
 /** プラグイン名から PluginInfo を検索 */
 export function findPluginByAlias(alias: string): PluginInfo | undefined {
-    return PLUGINS.find(p =>
-        p.pluginName === alias ||
-        p.displayName === alias ||
-        p.commonAliases.includes(alias)
-    );
+    return PLUGINS.find(p => p.displayName === alias) ||
+        PLUGINS.find(p => p.pluginName === alias) ||
+        PLUGINS.find(p => p.commonAliases.includes(alias));
 }
 
 /** 取り込む文を解析してエイリアス→プラグインのマッピングを返す */
 export function parseImports(text: string): Map<string, PluginInfo> {
     const map = new Map<string, PluginInfo>();
-    const regex = /取り込む\s+"([^"]+)"\s+として\s+([\p{L}\p{N}_]+)/gu;
+    const regex = /取り込む\s*(?:\(\s*)?"([^"]+)"(?:\s*\))?\s+として\s+([\p{L}\p{N}_]+)/gu;
     let match;
     while ((match = regex.exec(text)) !== null) {
-        const pluginName = match[1];
+        const pluginName = match[1].split('/').pop()?.replace(/\.hjp$/i, '') || match[1];
         const alias = match[2];
-        const plugin = PLUGINS.find(p => p.pluginName === pluginName);
+        const plugin = findPluginByAlias(pluginName);
         if (plugin) {
             map.set(alias, plugin);
         }

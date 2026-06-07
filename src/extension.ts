@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { registerCompletionProvider } from './completion';
+import { registerSnippetCompletion } from './snippetCompletion';
 import { registerHoverProvider } from './hover';
 import { registerRunCommands } from './runner';
 import { registerDiagnostics } from './diagnostics';
@@ -7,9 +8,64 @@ import { registerSymbolProviders } from './symbols';
 import { registerSignatureHelp } from './signatureHelp';
 import { registerCodeActions } from './codeActions';
 import { registerFormatter } from './formatter';
+import { registerTemplateCommands } from './templateCommand';
+import { registerAliasExpander } from './aliasExpander';
+import { registerBreakpointUI } from './breakpointManager';
+import { registerDebugCommands } from './debugManager';
+import { registerPluginWizard } from './pluginWizard';
+import { registerQuickFixExtended } from './quickFixExtended';
+import { registerBracketCompletion } from './bracketCompletion';
+import { registerIndentationDiagnostics } from './indentationDiagnostics';
+import { registerEnhancedSignatureHelp } from './enhancedSignatureHelp';
+import { registerRefactoringTools } from './refactoringTools';
+import { registerTestGeneration } from './testGeneration';
+import { registerPerformanceTools } from './performanceTools';
+import { registerDocumentationTools } from './documentationTools';
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('はじむ (Hajimu) 拡張機能 v2.0.0 がアクティブになりました');
+    console.log('はじむ (Hajimu) 拡張機能 v2.0.4 がアクティブになりました');
+
+    // テンプレート挿入コマンド（Cmd+Alt+で高速入力）
+    registerTemplateCommands(context);
+
+    // エイリアス短縮入力（"fn " → 関数テンプレート）
+    registerAliasExpander(context);
+
+    // スニペット補完（プリフィックスベース）
+    registerSnippetCompletion(context);
+
+    // ブレークポイント UI（ガター表示）
+    registerBreakpointUI(context);
+
+    // デバッグコマンド（実行・停止・ブレークポイント管理）
+    registerDebugCommands(context);
+
+    // プラグインウィザード（GUI/Web/Discord セットアップ）
+    registerPluginWizard(context);
+
+    // Phase 8: 拡張クイックフィックス機能
+    registerQuickFixExtended(context);
+
+    // Phase 8: 括弧補完機能
+    registerBracketCompletion(context);
+
+    // Phase 8: インデント エラー診断
+    registerIndentationDiagnostics(context);
+
+    // Phase 8: 改善されたシグネチャヘルプ
+    registerEnhancedSignatureHelp(context);
+
+    // Phase 9: リファクタリングツール
+    registerRefactoringTools(context);
+
+    // Phase 10: テスト生成・検証
+    registerTestGeneration(context);
+
+    // Phase 11: パフォーマンス最適化
+    registerPerformanceTools(context);
+
+    // Phase 12: ドキュメント生成
+    registerDocumentationTools(context);
 
     // コード補完（プラグイン対応）
     registerCompletionProvider(context);

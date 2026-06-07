@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { KEYWORDS, BUILTIN_FUNCTIONS } from './languageData';
-import { parseImports, PLUGINS } from './pluginData';
+import { KEYWORDS, BUILTIN_FUNCTIONS, getEnglishConceptTerms } from './languageData';
+import { findPluginByAlias, parseImports } from './pluginData';
 
 export function registerHoverProvider(context: vscode.ExtensionContext) {
     const provider = vscode.languages.registerHoverProvider('hajimu', {
@@ -26,7 +26,15 @@ export function registerHoverProvider(context: vscode.ExtensionContext) {
                 const md = new vscode.MarkdownString();
                 md.appendMarkdown(`## キーワード: \`${keyword.name}\`\n\n`);
                 md.appendMarkdown(`${keyword.description}\n\n`);
-                md.appendMarkdown(`**構文:**\n\`\`\`hajimu\n${keyword.detail}\n\`\`\``);
+                appendEnglishConceptTerms(md, keyword.name);
+                md.appendMarkdown(`**構文:**\n\`\`\`hajimu\n${keyword.detail}\n\`\`\`\n\n`);
+                // examples を表示
+                if (keyword.examples && keyword.examples.length > 0) {
+                    md.appendMarkdown(`**使用例:**\n`);
+                    for (const ex of keyword.examples) {
+                        md.appendMarkdown(`\`\`\`hajimu\n${ex}\n\`\`\`\n`);
+                    }
+                }
                 return new vscode.Hover(md, wordRange);
             }
 
@@ -36,8 +44,16 @@ export function registerHoverProvider(context: vscode.ExtensionContext) {
                 const md = new vscode.MarkdownString();
                 md.appendMarkdown(`## 組み込み関数: \`${builtin.name}\`\n\n`);
                 md.appendMarkdown(`${builtin.description}\n\n`);
+                appendEnglishConceptTerms(md, builtin.name);
                 md.appendMarkdown(`**シグネチャ:**\n\`\`\`hajimu\n${builtin.signature}\n\`\`\`\n\n`);
                 md.appendMarkdown(`**カテゴリ:** ${builtin.category}`);
+                // examples を表示
+                if (builtin.examples && builtin.examples.length > 0) {
+                    md.appendMarkdown(`\n\n**使用例:**\n`);
+                    for (const ex of builtin.examples) {
+                        md.appendMarkdown(`\`\`\`hajimu\n${ex}\n\`\`\`\n`);
+                    }
+                }
                 return new vscode.Hover(md, wordRange);
             }
 
@@ -87,12 +103,7 @@ function getPluginFunctionHover(
             let plugin = importMap.get(alias);
             if (!plugin) {
                 // よく使われるエイリアスも検索
-                for (const p of PLUGINS) {
-                    if (p.commonAliases.includes(alias)) {
-                        plugin = p;
-                        break;
-                    }
-                }
+                plugin = findPluginByAlias(alias);
             }
             if (plugin) {
                 const func = plugin.functions.find(f => f.name === funcName);
@@ -105,6 +116,13 @@ function getPluginFunctionHover(
                     }
                     md.appendMarkdown(`**カテゴリ:** ${func.category}\n\n`);
                     md.appendMarkdown(`**プラグイン:** ${plugin.displayName} v${plugin.version}`);
+                    // examples を表示
+                    if (func.examples && func.examples.length > 0) {
+                        md.appendMarkdown(`\n\n**使用例:**\n`);
+                        for (const ex of func.examples) {
+                            md.appendMarkdown(`\`\`\`hajimu\n${ex}\n\`\`\`\n`);
+                        }
+                    }
                     const range = new vscode.Range(
                         position.line, matchStart,
                         position.line, matchEnd
@@ -114,6 +132,43 @@ function getPluginFunctionHover(
             }
         }
     }
+    return getPluginBracketFunctionHover(document, position, line);
+}
+
+function getPluginBracketFunctionHover(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+    line: string
+): vscode.Hover | undefined {
+    const pattern = /([\p{L}_][\p{L}\p{N}_]*)\s*\[\s*"([^"]+)"\s*\]/gu;
+    let match: RegExpExecArray | null;
+    while ((match = pattern.exec(line)) !== null) {
+        const matchStart = match.index;
+        const matchEnd = matchStart + match[0].length;
+        if (position.character < matchStart || position.character > matchEnd) {
+            continue;
+        }
+
+        const alias = match[1];
+        const funcName = match[2];
+        const importMap = parseImports(document.getText());
+        const plugin = importMap.get(alias) || findPluginByAlias(alias);
+        const func = plugin?.functions.find(f => f.name === funcName);
+        if (!plugin || !func) {
+            continue;
+        }
+
+        const md = new vscode.MarkdownString();
+        md.appendMarkdown(`## ${plugin.displayName}: \`${alias}["${func.name}"]\`\n\n`);
+        md.appendMarkdown(`${func.description}\n\n`);
+        if (func.signature) {
+            md.appendMarkdown(`**シグネチャ:**\n\`\`\`hajimu\n${alias}["${func.name}"](...)\n\`\`\`\n\n`);
+        }
+        md.appendMarkdown(`**カテゴリ:** ${func.category}\n\n`);
+        md.appendMarkdown(`**プラグイン:** ${plugin.displayName} v${plugin.version}`);
+        return new vscode.Hover(md, new vscode.Range(position.line, matchStart, position.line, matchEnd));
+    }
+
     return undefined;
 }
 
@@ -153,4 +208,13 @@ function getUserDefinedHover(
 
 function escapeRegex(s: string): string {
     return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function appendEnglishConceptTerms(md: vscode.MarkdownString, name: string): void {
+    const terms = getEnglishConceptTerms(name);
+    if (terms.length === 0) {
+        return;
+    }
+
+    md.appendMarkdown(`**英語圏の用語:** ${terms.map(term => `\`${term}\``).join(', ')}\n\n`);
 }

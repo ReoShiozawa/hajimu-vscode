@@ -12,6 +12,9 @@
     { "open": "(", "close": ")" },
     { "open": "[", "close": "]" },
     { "open": "{", "close": "}" },
+    { "open": "（", "close": "）" },
+    { "open": "［", "close": "］" },
+    { "open": "｛", "close": "｝" },
     { "open": "\"", "close": "\"", "notIn": ["string"] },
     { "open": "「", "close": "」" },
     { "open": "『", "close": "』" }
@@ -20,32 +23,35 @@
     ["(", ")"],
     ["[", "]"],
     ["{", "}"],
+    ["（", "）"],
+    ["［", "］"],
+    ["｛", "｝"],
     ["\"", "\""],
     ["「", "」"],
     ["『", "』"]
   ],
   "folding": {
     "markers": {
-      "start": "^\\s*(関数|生成関数|もし|条件|繰り返す|型|試行|選択|照合|各)\\b",
-      "end": "^\\s*終わり\\b"
+      "start": "^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化|function|fn|generator|if|else|while|for|class|try|catch|finally|switch|case|default|match|init)\\b",
+      "end": "^\\s*(終わり|end)\\b"
     }
   },
   "indentationRules": {
-    "increaseIndentPattern": "^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化)\\b.*:\\s*$|^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化|なら)\\s*$",
-    "decreaseIndentPattern": "^\\s*(終わり|それ以外もし|それ以外|捕獲|最終|場合|既定)\\b"
+    "increaseIndentPattern": "^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化|function|fn|generator|if|else|while|for|class|try|catch|finally|switch|case|default|match|init)\\b.*:\\s*$|^\\s*(なら|then)\\s*$",
+    "decreaseIndentPattern": "^\\s*(終わり|end|それ以外もし|それ以外|else|捕獲|catch|最終|finally|場合|case|既定|default)\\b"
   },
   "wordPattern": "[\\p{L}\\p{N}_]+",
   "onEnterRules": [
     {
-      "beforeText": "^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化)\\b.*:\\s*$",
+      "beforeText": "^\\s*(関数|生成関数|もし|それ以外もし|それ以外|条件|繰り返す|型|試行|捕獲|最終|選択|場合|既定|照合|各|初期化|function|fn|generator|if|else|while|for|class|try|catch|finally|switch|case|default|match|init)\\b.*:\\s*$",
       "action": { "indent": "indent" }
     },
     {
-      "beforeText": "^\\s*なら\\s*$",
+      "beforeText": "^\\s*(なら|then)\\s*$",
       "action": { "indent": "indent" }
     },
     {
-      "beforeText": "^\\s*終わり\\s*$",
+      "beforeText": "^\\s*(終わり|end)\\s*$",
       "action": { "indent": "outdent" }
     }
   ]
