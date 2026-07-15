@@ -2,7 +2,7 @@
   "name": "hajimu-language",
   "displayName": "はじむ (Hajimu) Language Support",
   "description": "日本語プログラミング言語「はじむ」のVS Code拡張機能 - ローマ字入力展開、構文エラー検知、未定義識別子サジェスト、コード補完、ホバー情報、シグネチャヘルプ、シンボル・定義ジャンプ、コードアクション、フォーマッタ、カラーピッカー、プラグイン対応、デバッグ機能、括弧補完",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "publisher": "ReoShiozawa",
   "author": {
     "name": "Reo Shiozawa"
@@ -93,6 +93,10 @@
       {
         "command": "hajimu.runSelection",
         "title": "はじむ: 選択範囲を実行"
+      },
+      {
+        "command": "hajimu.normalizeFullWidthSymbols",
+        "title": "はじむ: 全角記号をコード用に整える"
       },
       {
         "command": "hajimu.insertFunctionTemplate",
@@ -453,8 +457,8 @@
         },
         "hajimu.diagnostics.undefinedIdentifiers": {
           "type": "boolean",
-          "default": true,
-          "description": "未定義の可能性がある識別子を検出し、近い名前への修正候補を表示する"
+          "default": false,
+          "description": "未定義の可能性がある識別子を推測して表示する（誤検出を避けるため既定では無効）"
         },
         "hajimu.format.tabSize": {
           "type": "number",
@@ -478,8 +482,13 @@
         },
         "hajimu.editor.indentDiagnostics": {
           "type": "boolean",
+          "default": false,
+          "description": "全角空白や空白混在など、インデント入力の診断を有効にする"
+        },
+        "hajimu.japaneseInput.autoNormalizeFullWidthSymbols": {
+          "type": "boolean",
           "default": true,
-          "description": "インデント エラー診断を有効にする"
+          "description": "日本語IMEで入力した全角の括弧・演算子をコード用の半角記号へ自動変換する"
         },
         "hajimu.editor.bracketCompletion": {
           "type": "boolean",
@@ -512,6 +521,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
+    "test": "npm run compile && node scripts/test-language-support.js",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
     "generate:plugins": "node scripts/extract-plugin-functions.js",

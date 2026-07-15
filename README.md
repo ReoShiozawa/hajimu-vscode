@@ -44,8 +44,8 @@
 - 英語構文 alias でもブロック折りたたみ・インデント補助が動作
 - 日本語構文と英語構文を混ぜたコードでも補完・ホバー・診断を利用可能
 
-### ⌨️ ローマ字入力展開
-日本語キーワードの入力速度を上げるため、ローマ字や英語名から補完できます。
+### 日本語入力支援
+日本語キーワードの入力速度を上げるため、ローマ字、かな、表記ゆれ、英語名から補完できます。
 
 | 入力 | 展開後 |
 |---|---|
@@ -55,11 +55,17 @@
 | `modosu` / `return` | `戻す` |
 | `torikomu` / `import` | `取り込む` |
 | `hyouji` / `print` | `表示` |
+| `かんすう` | `関数` |
+| `取りこむ` / `とりこむ` | `取り込む` |
+| `繰返す` / `くりかえす` | `繰り返す` |
 
 `hajimu.romajiExpansion.autoExpandOnSpace` を有効にすると、`kansu ` のような入力をスペース確定で自動展開できます。
 
-### 🛠️ 診断と Quick Fix
-- 未定義の可能性がある識別子に近い名前を提案
+日本語IMEのまま `（ ）`、`＝`、全角英数字などを入力した場合は、コード領域だけを自動的に半角へ整えます。文字列とコメントの内容は変更しません。既存コードはコマンドパレットの「はじむ: 全角記号をコード用に整える」でまとめて整形できます。
+
+### 診断と Quick Fix
+- 日本語・英語構文のブロック対応を識別子との境界まで見て診断
+- 未定義の可能性がある識別子に近い名前を提案（任意設定）
 - プラグイン関数の import 候補を Quick Fix で追加
 - `戻す` / `返す` の混在や import 構文の違いを説明
 - 括弧不足、辞書アクセス、配列アクセス、関数呼び出しを個別に診断
@@ -145,7 +151,7 @@
 
 ### VSIX ファイルから
 ```bash
-code --install-extension hajimu-language-2.0.4.vsix
+code --install-extension hajimu-language-2.1.0.vsix
 ```
 
 ## ⚙️ 設定
@@ -155,7 +161,9 @@ code --install-extension hajimu-language-2.0.4.vsix
 | `hajimu.executablePath` | `hajimu` | インタープリタのパス |
 | `hajimu.runInTerminal` | `true` | ターミナルで実行するか |
 | `hajimu.diagnostics.enabled` | `true` | リアルタイム診断を有効にする |
-| `hajimu.diagnostics.undefinedIdentifiers` | `true` | 未定義識別子の候補表示を有効にする |
+| `hajimu.diagnostics.undefinedIdentifiers` | `false` | 推測による未定義識別子の候補表示を有効にする |
+| `hajimu.editor.indentDiagnostics` | `false` | 全角空白・インデント文字混在の診断を有効にする |
+| `hajimu.japaneseInput.autoNormalizeFullWidthSymbols` | `true` | コード中の全角記号・英数字を自動的に半角化する |
 | `hajimu.plugins.gui.enabled` | `true` | GUI プラグイン補完を有効にする |
 | `hajimu.plugins.web.enabled` | `true` | Web プラグイン補完を有効にする |
 | `hajimu.plugins.discord.enabled` | `true` | Discord プラグイン補完を有効にする |
@@ -181,7 +189,7 @@ brew install hajimu
 
 ### シンタックスハイライト
 ```hajimu
-# フィボナッチ数列
+// フィボナッチ数列
 関数 フィボナッチ(数):
     もし 数 <= 1 なら
         戻す 数

@@ -190,10 +190,12 @@ function createPluginFunctionItems(
     return items;
 }
 
-function inputKindLabel(kind: 'romaji' | 'english' | 'short'): string {
+function inputKindLabel(kind: 'romaji' | 'kana' | 'english' | 'short'): string {
     switch (kind) {
         case 'romaji':
             return 'ローマ字';
+        case 'kana':
+            return 'かな・表記ゆれ';
         case 'english':
             return '英語エイリアス';
         case 'short':

@@ -8,41 +8,68 @@ import * as vscode from 'vscode';
 import { KEYWORDS, BUILTIN_FUNCTIONS } from './languageData';
 import { parseImports, PLUGINS } from './pluginData';
 import { getHajimuDiagnosticsConfig } from './config';
-
-interface BlockInfo {
-    keyword: string;
-    line: number;
-}
+import { analyzeBlocks, isValidImportStatement, maskCodeLines } from './syntaxAnalysis';
 
 export function registerDiagnostics(context: vscode.ExtensionContext): vscode.DiagnosticCollection {
     const diagnosticCollection = vscode.languages.createDiagnosticCollection('hajimu');
     context.subscriptions.push(diagnosticCollection);
 
-    // ドキュメント変更時に更新
+    const timers = new Map<string, ReturnType<typeof setTimeout>>();
+    const scheduleUpdate = (document: vscode.TextDocument, immediate = false) => {
+        const key = document.uri.toString();
+        const previous = timers.get(key);
+        if (previous) clearTimeout(previous);
+        const config = vscode.workspace.getConfiguration('hajimu', document.uri);
+        if (!config.get('diagnostics.enabled', true)) {
+            diagnosticCollection.delete(document.uri);
+            return;
+        }
+        const delay = immediate ? 0 : Math.max(0, config.get('diagnostics.delay', 500));
+        timers.set(key, setTimeout(() => {
+            timers.delete(key);
+            updateDiagnostics(document, diagnosticCollection);
+        }, delay));
+    };
+
+    // IME変換中の一時的な未完成構文へ波線を出さないよう遅延する。
     const onChange = vscode.workspace.onDidChangeTextDocument((e) => {
         if (e.document.languageId === 'hajimu') {
-            updateDiagnostics(e.document, diagnosticCollection);
+            scheduleUpdate(e.document);
         }
     });
 
     // ドキュメントを開いた時に更新
     const onOpen = vscode.workspace.onDidOpenTextDocument((doc) => {
         if (doc.languageId === 'hajimu') {
-            updateDiagnostics(doc, diagnosticCollection);
+            scheduleUpdate(doc, true);
         }
     });
 
     // ドキュメントが閉じた時にクリア
     const onClose = vscode.workspace.onDidCloseTextDocument((doc) => {
+        const key = doc.uri.toString();
+        const timer = timers.get(key);
+        if (timer) clearTimeout(timer);
+        timers.delete(key);
         diagnosticCollection.delete(doc.uri);
     });
 
-    context.subscriptions.push(onChange, onOpen, onClose);
+    const onConfig = vscode.workspace.onDidChangeConfiguration((event) => {
+        if (event.affectsConfiguration('hajimu.diagnostics')) {
+            vscode.workspace.textDocuments.forEach(doc => {
+                if (doc.languageId === 'hajimu') scheduleUpdate(doc, true);
+            });
+        }
+    });
+
+    context.subscriptions.push(onChange, onOpen, onClose, onConfig, {
+        dispose: () => timers.forEach(timer => clearTimeout(timer))
+    });
 
     // 既に開いているドキュメントを処理
     vscode.workspace.textDocuments.forEach((doc) => {
         if (doc.languageId === 'hajimu') {
-            updateDiagnostics(doc, diagnosticCollection);
+            scheduleUpdate(doc, true);
         }
     });
 
@@ -60,7 +87,6 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
     checkBrackets(lines, diagnostics);
     checkCommonErrors(lines, diagnostics);
     checkImportSyntax(lines, diagnostics);
-    checkReturnAliasConsistency(lines, diagnostics);
     checkCallAndAccessSyntax(lines, diagnostics);
     checkMissingPluginImports(text, lines, diagnostics);
     checkUndefinedIdentifiers(document, lines, diagnostics);
@@ -73,77 +99,13 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
  * 関数/もし/型/etc は「終わり」で閉じる必要がある
  */
 function checkBlockMatching(lines: string[], diagnostics: vscode.Diagnostic[]) {
-    const blockStack: BlockInfo[] = [];
-    const blockOpeners = [
-        '関数', '生成関数', 'もし', '条件', '型', '試行',
-        '選択', '照合', '列挙', '各'
-    ];
-    // 「繰り返す」は行末キーワード
-    // 「なら」行の後は条件分岐ブロック内
-
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        // hajimu のコメントは // のみ。# はカラーコードや ImGui ID に使われるためコメント扱いしない
-        const trimmed = line.replace(/\/\/.*$/, '').trim();
-
-        if (trimmed === '' || trimmed.startsWith('/*')) {
-            continue;
-        }
-
-        // ブロック内のサブキーワードはスタックに影響しない
-        if (/^(それ以外もし|それ以外|捕獲|最終|場合|既定)\b/.test(trimmed)) {
-            continue;
-        }
-
-        // 「繰り返す」で終わる行はブロック開始
-        if (/繰り返す\s*$/.test(trimmed)) {
-            blockStack.push({ keyword: '繰り返す', line: i });
-            continue;
-        }
-
-        // 「の間」で終わる行（while）はブロック開始
-        if (/の間\s*$/.test(trimmed)) {
-            blockStack.push({ keyword: '条件', line: i });
-            continue;
-        }
-
-        // 「初期化」単独行もブロック開始
-        if (/^初期化\s*\(/.test(trimmed) && /:$/.test(trimmed)) {
-            blockStack.push({ keyword: '初期化', line: i });
-            continue;
-        }
-
-        // ブロック開始キーワード
-        for (const opener of blockOpeners) {
-            if (trimmed.startsWith(opener) && !/終わり/.test(trimmed)) {
-                // 「もし A なら ... 終わり」が1行に収まっている場合はスキップ
-                if (opener === 'もし' && /終わり/.test(trimmed)) {
-                    continue;
-                }
-                blockStack.push({ keyword: opener, line: i });
-                break;
-            }
-        }
-
-        // 「終わり」キーワード
-        if (/^終わり\s*$/.test(trimmed) || trimmed === '終わり') {
-            if (blockStack.length === 0) {
-                diagnostics.push(new vscode.Diagnostic(
-                    new vscode.Range(i, 0, i, line.length),
-                    '対応するブロック開始キーワードがない「終わり」です。この行の「終わり」を削除するか、前に「関数」「もし」「型」などの開始行があるか確認してください',
-                    vscode.DiagnosticSeverity.Error
-                ));
-            } else {
-                blockStack.pop();
-            }
-        }
-    }
-
-    // 閉じられていないブロック
-    for (const block of blockStack) {
+    for (const block of analyzeBlocks(lines)) {
+        const line = lines[block.line];
         diagnostics.push(new vscode.Diagnostic(
-            new vscode.Range(block.line, 0, block.line, lines[block.line].length),
-            `「${block.keyword}」に対応する「終わり」がありません。${block.line + 1}行目で始まったブロックの最後に「終わり」を追加してください`,
+            new vscode.Range(block.line, 0, block.line, line.length),
+            block.kind === 'unexpected-end'
+                ? '対応する開始行がないブロック終了です。不要な「終わり」または「end」を削除してください'
+                : `「${block.keyword}」に対応するブロック終了がありません。最後に「終わり」または「end」を追加してください`,
             vscode.DiagnosticSeverity.Error
         ));
     }
@@ -231,24 +193,13 @@ function checkBracketPair(
     name: string
 ) {
     const stack: { line: number; col: number }[] = [];
+    const maskedLines = maskCodeLines(lines);
 
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        let inString = false;
-        let escaped = false;
-        let inComment = false;
+    for (let i = 0; i < maskedLines.length; i++) {
+        const line = maskedLines[i];
 
         for (let j = 0; j < line.length; j++) {
             const ch = line[j];
-
-            if (inComment) { break; }
-            if (escaped) { escaped = false; continue; }
-            if (ch === '\\') { escaped = true; continue; }
-
-            if (ch === '"' && !inComment) { inString = !inString; continue; }
-            if (inString) { continue; }
-
-            if (ch === '/' && j + 1 < line.length && line[j + 1] === '/') { break; }
 
             if (ch === open) {
                 stack.push({ line: i, col: j });
@@ -279,9 +230,10 @@ function checkBracketPair(
  * よくある構文エラーのパターンマッチング
  */
 function checkCommonErrors(lines: string[], diagnostics: vscode.Diagnostic[]) {
+    const maskedLines = maskCodeLines(lines);
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        const trimmed = line.replace(/\/\/.*$/, '').trim();
+        const trimmed = maskedLines[i].trim();
 
         if (trimmed === '') { continue; }
 
@@ -349,14 +301,11 @@ function checkImportSyntax(lines: string[], diagnostics: vscode.Diagnostic[]) {
         const line = lines[i];
         const trimmed = line.trim();
 
-        if (trimmed.startsWith('取り込む')) {
-            // 取り込む("パス") or 取り込む "パス" として 名前
-            if (!/^取り込む\s*\(\s*"[^"]*"\s*\)\s*$/.test(trimmed) &&
-                !/^取り込む\s+"[^"]+"\s+として\s+[\p{L}\p{N}_]+\s*$/u.test(trimmed) &&
-                !/^取り込む\s*\(\s*"[^"]*"\s*\)\s*として\s+[\p{L}\p{N}_]+\s*$/u.test(trimmed)) {
+        if (/^(?:取り込む|import|use)(?:\s|\()/iu.test(trimmed)) {
+            if (!isValidImportStatement(trimmed)) {
                 diagnostics.push(new vscode.Diagnostic(
                     new vscode.Range(i, 0, i, line.length),
-                    '「取り込む」の構文が不正です。取り込む("パス") または 取り込む "パス" として 名前 の形式を使用してください',
+                    '取り込み構文が不正です。例: 取り込む "パス" として 名前 / import "path" as name',
                     vscode.DiagnosticSeverity.Warning
                 ));
             }
@@ -418,27 +367,6 @@ function checkCallAndAccessSyntax(lines: string[], diagnostics: vscode.Diagnosti
             ));
         }
 
-        const openParen = (masked.match(/\(/g) || []).length;
-        const closeParen = (masked.match(/\)/g) || []).length;
-        if (openParen > closeParen && /[\p{L}_][\p{L}\p{N}_]*\s*\(/u.test(masked)) {
-            const index = masked.lastIndexOf('(');
-            diagnostics.push(new vscode.Diagnostic(
-                new vscode.Range(i, index, i, index + 1),
-                '関数呼び出しの閉じ括弧「)」がありません。例: 表示("こんにちは")',
-                vscode.DiagnosticSeverity.Warning
-            ));
-        }
-
-        const openBracket = (masked.match(/\[/g) || []).length;
-        const closeBracket = (masked.match(/\]/g) || []).length;
-        if (openBracket > closeBracket) {
-            const index = masked.lastIndexOf('[');
-            diagnostics.push(new vscode.Diagnostic(
-                new vscode.Range(i, index, i, index + 1),
-                '配列/辞書アクセスの閉じ括弧「]」がありません。例: 配列[0] または 辞書["名前"]',
-                vscode.DiagnosticSeverity.Warning
-            ));
-        }
     }
 }
 
