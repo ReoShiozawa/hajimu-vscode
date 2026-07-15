@@ -70,22 +70,16 @@ check('plugin extraction script can see engine_audio functions', () => {
   assert(script.includes('inferCategory'), 'extract script missing category inference');
 });
 
-check('Kaname key files are covered by plugin aliases', () => {
-  const kanameRoot = path.resolve(root, '..', 'kaname');
-  if (!fs.existsSync(kanameRoot)) {
-    return;
-  }
-
-  const deploy = fs.readFileSync(path.join(kanameRoot, 'src/runtime/デプロイ.jp'), 'utf8');
+check('Kaname engine packages are covered by plugin aliases', () => {
+  const engineData = read('src/pluginDataEngine.ts');
   for (const needle of [
     'engine_render',
     'engine_2d',
     'engine_rpg',
     'engine_audio',
-    'として 描画',
-    'として 音声'
+    'engine_core'
   ]) {
-    assert(deploy.includes(needle), `Kaname deploy sample missing ${needle}`);
+    assert(engineData.includes(needle), `plugin aliases missing ${needle}`);
   }
 });
 

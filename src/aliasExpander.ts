@@ -133,7 +133,7 @@ export function registerAliasExpander(context: vscode.ExtensionContext) {
         const lineText = line.text.substring(0, cursorPos.character);
 
         // 最後の単語を抽出（スペース区切り）
-        const match = lineText.match(/(\w+)$/);
+        const match = lineText.match(/([\p{L}\p{N}_]+)$/u);
         if (!match) {
             return;
         }

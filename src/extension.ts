@@ -21,15 +21,19 @@ import { registerRefactoringTools } from './refactoringTools';
 import { registerTestGeneration } from './testGeneration';
 import { registerPerformanceTools } from './performanceTools';
 import { registerDocumentationTools } from './documentationTools';
+import { registerJapaneseInputSupport } from './japaneseInputSupport';
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('はじむ (Hajimu) 拡張機能 v2.0.4 がアクティブになりました');
+    console.log('はじむ (Hajimu) 拡張機能がアクティブになりました');
 
     // テンプレート挿入コマンド（Cmd+Alt+で高速入力）
     registerTemplateCommands(context);
 
     // エイリアス短縮入力（"fn " → 関数テンプレート）
     registerAliasExpander(context);
+
+    // 日本語IMEで入力した全角記号を安全に補正する。
+    registerJapaneseInputSupport(context);
 
     // スニペット補完（プリフィックスベース）
     registerSnippetCompletion(context);

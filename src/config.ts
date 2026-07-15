@@ -22,7 +22,7 @@ export function getRomajiExpansionConfig(scope?: vscode.Uri): RomajiExpansionCon
 export function getHajimuDiagnosticsConfig(scope?: vscode.Uri): HajimuDiagnosticsConfig {
     const config = vscode.workspace.getConfiguration('hajimu', scope);
     return {
-        undefinedIdentifiers: config.get('diagnostics.undefinedIdentifiers', true)
+        undefinedIdentifiers: config.get('diagnostics.undefinedIdentifiers', false)
     };
 }
 

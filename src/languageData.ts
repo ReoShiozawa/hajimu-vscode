@@ -15,7 +15,7 @@ export interface KeywordInfo {
 
 export interface InputExpansionAlias {
     text: string;
-    kind: 'romaji' | 'english' | 'short';
+    kind: 'romaji' | 'kana' | 'english' | 'short';
 }
 
 export interface InputExpansion {
@@ -45,6 +45,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         aliases: [
             { text: 'kansu', kind: 'romaji' },
             { text: 'kansuu', kind: 'romaji' },
+            { text: 'かんすう', kind: 'kana' },
             { text: 'func', kind: 'short' },
             { text: 'function', kind: 'english' }
         ]
@@ -56,6 +57,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         aliases: [
             { text: 'hensuu', kind: 'romaji' },
             { text: 'hensu', kind: 'romaji' },
+            { text: 'へんすう', kind: 'kana' },
             { text: 'var', kind: 'english' },
             { text: 'let', kind: 'english' }
         ]
@@ -67,6 +69,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         aliases: [
             { text: 'teisuu', kind: 'romaji' },
             { text: 'teisu', kind: 'romaji' },
+            { text: 'ていすう', kind: 'kana' },
             { text: 'const', kind: 'english' }
         ]
     },
@@ -76,6 +79,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         category: 'キーワード',
         aliases: [
             { text: 'moshi', kind: 'romaji' },
+            { text: 'もし', kind: 'kana' },
             { text: 'if', kind: 'english' }
         ]
     },
@@ -85,6 +89,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         category: 'キーワード',
         aliases: [
             { text: 'soreigai', kind: 'romaji' },
+            { text: 'それいがい', kind: 'kana' },
             { text: 'else', kind: 'english' }
         ]
     },
@@ -95,6 +100,8 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         aliases: [
             { text: 'modosu', kind: 'romaji' },
             { text: 'kaesu', kind: 'romaji' },
+            { text: 'もどす', kind: 'kana' },
+            { text: 'かえす', kind: 'kana' },
             { text: 'return', kind: 'english' }
         ]
     },
@@ -104,6 +111,8 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         category: 'キーワード',
         aliases: [
             { text: 'owari', kind: 'romaji' },
+            { text: 'おわり', kind: 'kana' },
+            { text: '終り', kind: 'kana' },
             { text: 'end', kind: 'english' }
         ]
     },
@@ -113,6 +122,8 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         category: 'キーワード',
         aliases: [
             { text: 'torikomu', kind: 'romaji' },
+            { text: 'とりこむ', kind: 'kana' },
+            { text: '取りこむ', kind: 'kana' },
             { text: 'import', kind: 'english' }
         ]
     },
@@ -123,6 +134,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         aliases: [
             { text: 'hyouji', kind: 'romaji' },
             { text: 'hyoji', kind: 'romaji' },
+            { text: 'ひょうじ', kind: 'kana' },
             { text: 'print', kind: 'english' }
         ]
     },
@@ -132,6 +144,8 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         category: 'キーワード',
         aliases: [
             { text: 'kurikaesu', kind: 'romaji' },
+            { text: 'くりかえす', kind: 'kana' },
+            { text: '繰返す', kind: 'kana' },
             { text: 'loop', kind: 'english' }
         ]
     },
@@ -141,6 +155,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         category: 'キーワード',
         aliases: [
             { text: 'jouken', kind: 'romaji' },
+            { text: 'じょうけん', kind: 'kana' },
             { text: 'while', kind: 'english' }
         ]
     },
@@ -150,6 +165,7 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
         category: 'キーワード',
         aliases: [
             { text: 'kata', kind: 'romaji' },
+            { text: 'かた', kind: 'kana' },
             { text: 'class', kind: 'english' }
         ]
     },
@@ -170,6 +186,68 @@ export const INPUT_EXPANSIONS: InputExpansion[] = [
             { text: 'jibun', kind: 'romaji' },
             { text: 'self', kind: 'english' },
             { text: 'this', kind: 'english' }
+        ]
+    },
+    {
+        output: '各',
+        description: '配列などの各要素を順に処理する',
+        category: 'キーワード',
+        aliases: [
+            { text: 'kaku', kind: 'romaji' },
+            { text: 'かく', kind: 'kana' },
+            { text: 'each', kind: 'english' },
+            { text: 'foreach', kind: 'english' }
+        ]
+    },
+    {
+        output: 'それ以外もし',
+        description: '前の条件が偽の場合に別の条件を調べる',
+        category: 'キーワード',
+        aliases: [
+            { text: 'soreigaimoshi', kind: 'romaji' },
+            { text: 'それいがいもし', kind: 'kana' },
+            { text: 'elif', kind: 'english' },
+            { text: 'elseif', kind: 'english' }
+        ]
+    },
+    {
+        output: '抜ける',
+        description: '繰り返し処理を終了する',
+        category: 'キーワード',
+        aliases: [
+            { text: 'nukeru', kind: 'romaji' },
+            { text: 'ぬける', kind: 'kana' },
+            { text: 'break', kind: 'english' }
+        ]
+    },
+    {
+        output: '続ける',
+        description: '次の繰り返しへ進む',
+        category: 'キーワード',
+        aliases: [
+            { text: 'tsuzukeru', kind: 'romaji' },
+            { text: 'つづける', kind: 'kana' },
+            { text: 'continue', kind: 'english' }
+        ]
+    },
+    {
+        output: '試行',
+        description: '例外処理を開始する',
+        category: 'キーワード',
+        aliases: [
+            { text: 'shikou', kind: 'romaji' },
+            { text: 'しこう', kind: 'kana' },
+            { text: 'try', kind: 'english' }
+        ]
+    },
+    {
+        output: '捕獲',
+        description: '発生した例外を受け取る',
+        category: 'キーワード',
+        aliases: [
+            { text: 'hokaku', kind: 'romaji' },
+            { text: 'ほかく', kind: 'kana' },
+            { text: 'catch', kind: 'english' }
         ]
     },
     {
