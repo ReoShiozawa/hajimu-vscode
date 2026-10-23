@@ -25,6 +25,12 @@ jobs:
       - run: npm run verify:assets
       - run: npm run package
       - run: npm audit --audit-level=high
+      - name: VSIXを検証用成果物として保存
+        uses: actions/upload-artifact@v4
+        with:
+          name: hajimu-vsix
+          path: "*.vsix"
+          if-no-files-found: error
       - name: Sign build provenance and SBOM
         if: github.event_name != 'pull_request'
         uses: ./.github/actions/release-integrity
