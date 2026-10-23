@@ -432,9 +432,52 @@
         "when": "resourceLangId == hajimu"
       }
     ],
+    "debuggers": [
+      {
+        "type": "hajimu",
+        "label": "Hajimu",
+        "languages": [
+          "hajimu"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "実行するファイル"
+              },
+              "runtimeExecutable": {
+                "type": "string",
+                "description": "はじむ本体のパス"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "hajimu",
+            "request": "launch",
+            "name": "はじむ",
+            "program": "${file}"
+          }
+        ]
+      }
+    ],
     "configuration": {
       "title": "はじむ (Hajimu)",
       "properties": {
+        "hajimu.languageServer.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "本体のパーサーを利用する共通言語サーバーを有効にする"
+        },
         "hajimu.executablePath": {
           "type": "string",
           "default": "hajimu",
@@ -529,9 +572,15 @@
     "package": "vsce package"
   },
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^4.0.0",
+    "eslint": "^9.38.0",
     "typescript": "^5.3.0",
-    "@vscode/vsce": "^2.22.0"
+    "typescript-eslint": "^8.46.1"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
   }
 }

@@ -1,10 +1,13 @@
 .vscode/**
 .vscode-test/**
+.github/**
+.githooks/**
+.pre-commit-config.yaml
+eslint.config.mjs
 src/**
 .gitignore
 tsconfig.json
 **/*.map
-node_modules/**
 *.vsix
 .DS_Store
 **/.DS_Store

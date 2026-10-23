@@ -171,11 +171,15 @@ export function registerDebugCommands(context: vscode.ExtensionContext) {
         }
 
         await editor.document.save();
-        await debugManager.runDebug(editor.document.fileName);
+        await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(editor.document.uri), {
+            type: 'hajimu', request: 'launch', name: 'はじむ', program: editor.document.fileName,
+            runtimeExecutable: vscode.workspace.getConfiguration('hajimu').get('executablePath', 'hajimu')
+        });
     });
 
     // デバッグ停止
     const debugStopCommand = vscode.commands.registerCommand('hajimu.debugStop', () => {
+        if (vscode.debug.activeDebugSession?.type === 'hajimu') void vscode.debug.stopDebugging();
         debugManager.stop();
     });
 

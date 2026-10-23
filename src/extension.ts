@@ -22,8 +22,9 @@ import { registerTestGeneration } from './testGeneration';
 import { registerPerformanceTools } from './performanceTools';
 import { registerDocumentationTools } from './documentationTools';
 import { registerJapaneseInputSupport } from './japaneseInputSupport';
+import { registerLanguageServer, registerDebugAdapter } from './languageServer';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     console.log('はじむ (Hajimu) 拡張機能がアクティブになりました');
 
     // テンプレート挿入コマンド（Cmd+Alt+で高速入力）
@@ -43,6 +44,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     // デバッグコマンド（実行・停止・ブレークポイント管理）
     registerDebugCommands(context);
+    registerDebugAdapter(context);
+    const languageServer = await registerLanguageServer(context);
 
     // プラグインウィザード（GUI/Web/Discord セットアップ）
     registerPluginWizard(context);
@@ -81,10 +84,10 @@ export function activate(context: vscode.ExtensionContext) {
     registerRunCommands(context);
 
     // 構文エラー検知（リアルタイム診断）
-    const diagnostics = registerDiagnostics(context);
+    if (!languageServer) registerDiagnostics(context);
 
     // ドキュメントシンボル & 定義へ移動
-    registerSymbolProviders(context);
+    if (!languageServer) registerSymbolProviders(context);
 
     // シグネチャヘルプ（パラメータヒント）
     registerSignatureHelp(context);
@@ -93,7 +96,7 @@ export function activate(context: vscode.ExtensionContext) {
     registerCodeActions(context);
 
     // ドキュメントフォーマッタ
-    registerFormatter(context);
+    if (!languageServer) registerFormatter(context);
 
     // カラープロバイダ（色関数のプレビュー）
     registerColorProvider(context);

@@ -1,5 +1,7 @@
 # はじむ (Hajimu) Language Support for VS Code
 
+本体の`--analyze`に対応した共通LSPと、条件付きブレークポイント・変数・コールスタックを表示するDAPを利用できます。最新版のはじむ本体を`hajimu.executablePath`に指定してください。LSPを無効にする場合は`hajimu.languageServer.enabled`をfalseにします。解析対象と制限は[本体の開発基盤仕様](https://github.com/ReoShiozawa/hajimu/blob/main/docs/DEVELOPMENT_FOUNDATION.md)に記載しています。
+
 **日本語プログラミング言語「はじむ」の VS Code 拡張機能**
 
 完全日本語構文のプログラミング言語「はじむ」を VS Code で快適に開発するための拡張機能です。
